@@ -12,7 +12,14 @@ module Polycon
         ]
 
         def call(name:, **)
-          warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{name.gsub(" ","_")}")
+             puts "This professional already exists"
+          else
+             Dir.mkdir(Dir.home + "/.Polycon/Professionals/#{name.gsub(" ","_")}")
+             puts "Creates a new professional named '#{name}'"
+          end
+          #
         end
       end
 
@@ -28,6 +35,7 @@ module Polycon
 
         def call(name: nil)
           warn "TODO: Implementar borrado de la o el profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #FileUtils.rm_rf(".../professionals/#{name.gsub(" ","_")}")
         end
       end
 

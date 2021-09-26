@@ -74,8 +74,8 @@ module Polycon
           '"Alma Estevez" # Lists all appointments for Alma Estevez',
           '"Alma Estevez" --date="2021-09-16" # Lists appointments for Alma Estevez on the specified date'
         ]
-
-        def call(professional:)
+        def call(professional:, date: nil)
+        #def call(professional:)
           warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
