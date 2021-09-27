@@ -22,7 +22,7 @@ module Polycon
         
           if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}") && Time.now <= Time.parse(date) && !(File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf"))
              file=File.open(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
-             file.puts("Nombre: #{name}\nApellido: #{surname}\nTelefono: #{phone}\nNotas: #{notes}")
+             file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
              file.close
              puts "Appointments created correctly"
           elsif Time.now >= Time.parse(date)
@@ -47,7 +47,16 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          if File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+             puts "Appointment\nProfessional: #{professional}\nDate: #{date}\n#{File.read(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")}"
+          elsif Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}")
+             puts ""
+          else
+             puts ""
+          end  
+          #
+
         end
       end
 
