@@ -1,3 +1,5 @@
+require 'time'
+
 module Polycon
   module Commands
     module Appointments
@@ -16,7 +18,19 @@ module Polycon
         ]
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
-          warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+        
+          if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}") && Time.now <= Time.parse(date) && !(File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf"))
+             File.open(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
+             puts "Appointments created correctly"
+          elsif Time.now >= Time.parse(date)
+             puts "Incorrect date"
+          elsif File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+             puts "Appointments already existing" 
+          else
+             puts "The proffsional does not exist"
+          end
+          #
         end
       end
 
@@ -68,14 +82,15 @@ module Polycon
         desc 'List appointments for a professional, optionally filtered by a date'
 
         argument :professional, required: true, desc: 'Full name of the professional'
+
         option :date, required: false, desc: 'Date to filter appointments by (should be the day)'
 
         example [
           '"Alma Estevez" # Lists all appointments for Alma Estevez',
           '"Alma Estevez" --date="2021-09-16" # Lists appointments for Alma Estevez on the specified date'
         ]
-        def call(professional:, date: nil)
-        #def call(professional:)
+
+        def call(professional:)
           warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
