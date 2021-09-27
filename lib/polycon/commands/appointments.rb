@@ -50,10 +50,10 @@ module Polycon
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           if File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
              puts "Appointment\nProfessional: #{professional}\nDate: #{date}\n#{File.read(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")}"
-          elsif Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}")
-             puts ""
+          elsif !(Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}"))
+            puts "The proffsional does not exist"
           else
-             puts ""
+             puts "There is no turn for this date"
           end  
           #
 
