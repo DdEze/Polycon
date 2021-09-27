@@ -71,7 +71,17 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          
+          if File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+             FileUtils.rm_rf(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+            puts "Appointments canceled"
+            elsif !(Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}"))
+             puts "The proffsional does not exist"
+          else
+             puts "There is no turn for this date"
+          end
+          #
         end
       end
 
