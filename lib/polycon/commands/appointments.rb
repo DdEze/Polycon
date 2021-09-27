@@ -21,7 +21,9 @@ module Polycon
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         
           if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}") && Time.now <= Time.parse(date) && !(File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf"))
-             File.open(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
+             file=File.open(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
+             file.puts("Nombre: #{name}\nApellido: #{surname}\nTelefono: #{phone}\nNotas: #{notes}")
+             file.close
              puts "Appointments created correctly"
           elsif Time.now >= Time.parse(date)
              puts "Incorrect date"
