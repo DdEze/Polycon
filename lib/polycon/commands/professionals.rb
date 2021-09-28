@@ -13,10 +13,10 @@ module Polycon
 
         def call(name:, **)
           #warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{name.gsub(" ","_")}")
+          if Dir.exist?(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
              puts "This professional already exists"
           else
-             Dir.mkdir(Dir.home + "/.Polycon/Professionals/#{name.gsub(" ","_")}")
+             Dir.mkdir(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
              puts "Creates a new professional named '#{name}'"
           end
           #
@@ -36,8 +36,8 @@ module Polycon
         def call(name: nil)
           #warn "TODO: Implementar borrado de la o el profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           
-          if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{name.gsub(" ","_")}")
-             FileUtils.rm_rf(Dir.home + "/.Polycon/Professionals/#{name.gsub(" ","_")}")
+          if Dir.exist?(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
+             FileUtils.rm_rf(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
              puts "This professional was successfully deleted"
           else
              puts "This professional does not exist"
@@ -57,7 +57,7 @@ module Polycon
         def call(*)
           #warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
 
-          puts (Dir.entries(Dir.home + "/.Polycon/Professionals")).select {|f| !File.directory? f}
+          puts (Dir.entries(Dir.home + "/.Polycon")).select {|f| !File.directory? f}
           #
         end
       end
@@ -74,8 +74,8 @@ module Polycon
 
         def call(old_name:, new_name:, **)
           #warn "TODO: Implementar renombrado de profesionales con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{old_name.gsub(" ","_")}")
-            FileUtils.mv(Dir.home + "/.Polycon/Professionals/#{old_name.gsub(" ","_")}", Dir.home + "/.Polycon/Professionals/#{new_name.gsub(" ","_")}")
+          if Dir.exist?(Dir.home + "/.Polycon/#{old_name.gsub(" ","_")}")
+            FileUtils.mv(Dir.home + "/.Polycon/#{old_name.gsub(" ","_")}", Dir.home + "/.Polycon/#{new_name.gsub(" ","_")}")
             puts "Up-to-date professional"
           else
             puts "This professional does not exist"

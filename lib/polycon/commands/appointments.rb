@@ -20,14 +20,14 @@ module Polycon
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         
-          if Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}") && Time.now <= Time.parse(date) && !(File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf"))
-             file=File.open(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
+          if Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}") && Time.now <= Time.parse(date) && !(File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf"))
+             file=File.open(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
              file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
              file.close
              puts "Appointments created correctly"
           elsif Time.now >= Time.parse(date)
              puts "Incorrect date"
-          elsif File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+          elsif File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
              puts "Appointments already existing" 
           else
              puts "The proffsional does not exist"
@@ -48,9 +48,9 @@ module Polycon
 
         def call(date:, professional:)
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
              puts "Appointment\nProfessional: #{professional}\nDate: #{date}\n#{File.read(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")}"
-          elsif !(Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}"))
+          elsif !(Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}"))
             puts "The proffsional does not exist"
           else
              puts "There is no turn for this date"
@@ -73,10 +73,10 @@ module Polycon
         def call(date:, professional:)
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           
-          if File.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
-             FileUtils.rm_rf(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+             FileUtils.rm_rf(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
             puts "Appointments canceled"
-            elsif !(Dir.exist?(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}"))
+            elsif !(Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}"))
              puts "The proffsional does not exist"
           else
              puts "There is no turn for this date"
@@ -95,7 +95,14 @@ module Polycon
         ]
 
         def call(professional:)
-          warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          if Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}")
+            FileUtils.rm_rf(Dir.glob(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/*"))
+            puts "They were tired all the appointments of the professional #{professional}"
+          else
+            puts "The proffsional does not exist"
+          end
+          #
         end
       end
 
@@ -112,7 +119,9 @@ module Polycon
         ]
 
         def call(professional:)
-          warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          puts (Dir.entries(Dir.home + "/.Polycon/#{professional}")).select {|f| !File.directory? f}
+          #
         end
       end
 
@@ -128,7 +137,16 @@ module Polycon
         ]
 
         def call(old_date:, new_date:, professional:)
-          warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{old_date.gsub(" ", "_")}.paf")
+            FileUtils.mv(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{old_date.gsub(" ", "_")}.paf", Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{new_date.gsub(" ", "_")}.paf")
+            puts "Up-to-date appointments"
+          elsif !Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}")
+            puts "This professional does not exist"
+          else
+            puts "This appointment does not exist"
+          end
+          #
         end
       end
 
@@ -150,6 +168,15 @@ module Polycon
 
         def call(date:, professional:, **options)
           warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
+             file = File.open(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf", "r")
+             s=""
+             file.each_line do |line|
+               s = s + line
+             end
+             file.close
+          end
+          #
         end
       end
     end
