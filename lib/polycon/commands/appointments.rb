@@ -1,9 +1,9 @@
-require 'time'
-
+require './lib/polycon/models/m_appointments'
 module Polycon
   module Commands
     module Appointments
       class Create < Dry::CLI::Command
+        include Appointmets_methods
         desc 'Create an appointment'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -19,24 +19,12 @@ module Polycon
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-        
-          if Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}") && Time.now <= Time.parse(date) && !(File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf"))
-             file=File.open(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf","w")
-             file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
-             file.close
-             puts "Appointments created correctly"
-          elsif Time.now >= Time.parse(date)
-             puts "Incorrect date"
-          elsif File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
-             puts "Appointments already existing" 
-          else
-             puts "The proffsional does not exist"
-          end
-          #
+          self.create_appointmet(date, professional, name, surname, phone, notes)
         end
       end
 
       class Show < Dry::CLI::Command
+        include Appointmets_methods
         desc 'Show details for an appointment'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -48,19 +36,12 @@ module Polycon
 
         def call(date:, professional:)
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
-             puts "Appointment\nProfessional: #{professional}\nDate: #{date}\n#{File.read(Dir.home + "/.Polycon/Professionals/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")}"
-          elsif !(Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}"))
-            puts "The proffsional does not exist"
-          else
-             puts "There is no turn for this date"
-          end  
-          #
-
+          self.show_appointment(date, professional)
         end
       end
 
       class Cancel < Dry::CLI::Command
+        include Appointmets_methods
         desc 'Cancel an appointment'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -72,20 +53,12 @@ module Polycon
 
         def call(date:, professional:)
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          
-          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
-             FileUtils.rm_rf(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
-            puts "Appointments canceled"
-            elsif !(Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}"))
-             puts "The proffsional does not exist"
-          else
-             puts "There is no turn for this date"
-          end
-          #
+          self.cancel_appointment(date, professional)
         end
       end
 
       class CancelAll < Dry::CLI::Command
+        include Appointmets_methods
         desc 'Cancel all appointments for a professional'
 
         argument :professional, required: true, desc: 'Full name of the professional'
@@ -96,17 +69,12 @@ module Polycon
 
         def call(professional:)
           #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}")
-            FileUtils.rm_rf(Dir.glob(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/*"))
-            puts "They were tired all the appointments of the professional #{professional}"
-          else
-            puts "The proffsional does not exist"
-          end
-          #
+          self.cancel_all_appointment(professional)
         end
       end
 
       class List < Dry::CLI::Command
+        include Appointmets_methods
         desc 'List appointments for a professional, optionally filtered by a date'
 
         argument :professional, required: true, desc: 'Full name of the professional'
@@ -120,12 +88,12 @@ module Polycon
 
         def call(professional:)
           #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          puts (Dir.entries(Dir.home + "/.Polycon/#{professional}")).select {|f| !File.directory? f}
-          #
+          self.list_appointmets(professional)
         end
       end
 
       class Reschedule < Dry::CLI::Command
+        include Appointmets_methods
         desc 'Reschedule an appointment'
 
         argument :old_date, required: true, desc: 'Current date of the appointment'
@@ -138,19 +106,13 @@ module Polycon
 
         def call(old_date:, new_date:, professional:)
           #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{old_date.gsub(" ", "_")}.paf")
-            FileUtils.mv(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{old_date.gsub(" ", "_")}.paf", Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{new_date.gsub(" ", "_")}.paf")
-            puts "Up-to-date appointments"
-          elsif !Dir.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}")
-            puts "This professional does not exist"
-          else
-            puts "This appointment does not exist"
-          end
+          self.reschedule_appointment(old_date, new_date, professional)
           #
         end
       end
 
       class Edit < Dry::CLI::Command
+        include Appointmets_methods
         desc 'Edit information for an appointments'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -167,16 +129,8 @@ module Polycon
         ]
 
         def call(date:, professional:, **options)
-          warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if File.exist?(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf")
-             file = File.open(Dir.home + "/.Polycon/#{professional.gsub(" ","_")}/#{date.gsub(" ", "_")}.paf", "r")
-             s=""
-             file.each_line do |line|
-               s = s + line
-             end
-             file.close
-          end
-          #
+          #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          self.edit_appointment(date, professional, **options)
         end
       end
     end

@@ -1,7 +1,9 @@
+require './lib/polycon/models/m_professionals'
 module Polycon
   module Commands
-    module Professionals
+    module Professionals 
       class Create < Dry::CLI::Command
+        include Professionals_methods
         desc 'Create a professional'
 
         argument :name, required: true, desc: 'Full name of the professional'
@@ -13,17 +15,13 @@ module Polycon
 
         def call(name:, **)
           #warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if Dir.exist?(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
-             puts "This professional already exists"
-          else
-             Dir.mkdir(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
-             puts "Creates a new professional named '#{name}'"
-          end
+          self.create_professional(name)
           #
         end
       end
 
       class Delete < Dry::CLI::Command
+        include Professionals_methods
         desc 'Delete a professional (only if they have no appointments)'
 
         argument :name, required: true, desc: 'Name of the professional'
@@ -36,18 +34,14 @@ module Polycon
         def call(name: nil)
           #warn "TODO: Implementar borrado de la o el profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           
-          if Dir.exist?(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
-             FileUtils.rm_rf(Dir.home + "/.Polycon/#{name.gsub(" ","_")}")
-             puts "This professional was successfully deleted"
-          else
-             puts "This professional does not exist"
-          end
+          self.delete_professional(name)
 
           #
         end
       end
 
       class List < Dry::CLI::Command
+        include Professionals_methods
         desc 'List professionals'
 
         example [
@@ -56,13 +50,13 @@ module Polycon
 
         def call(*)
           #warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-
-          puts (Dir.entries(Dir.home + "/.Polycon")).select {|f| !File.directory? f}
+          self.list_professionals
           #
         end
       end
 
       class Rename < Dry::CLI::Command
+        include Professionals_methods
         desc 'Rename a professional'
 
         argument :old_name, required: true, desc: 'Current name of the professional'
@@ -74,13 +68,8 @@ module Polycon
 
         def call(old_name:, new_name:, **)
           #warn "TODO: Implementar renombrado de profesionales con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          if Dir.exist?(Dir.home + "/.Polycon/#{old_name.gsub(" ","_")}")
-            FileUtils.mv(Dir.home + "/.Polycon/#{old_name.gsub(" ","_")}", Dir.home + "/.Polycon/#{new_name.gsub(" ","_")}")
-            puts "Up-to-date professional"
-          else
-            puts "This professional does not exist"
-          end
-        #
+          self.rename_professional(old_name, new_name)
+          #
         end
       end
     end
