@@ -1,10 +1,10 @@
 module Polycon
  module Patch
-        
+
      #rutas de los profesionales y turno
-        
+
      def rute_professional(professional)
-         (Dir.home) + "/.Polycon/#{professional.gsub(" ","_")}"
+         (Dir.home) + "/.polycon/#{professional.gsub(" ","_")}"
      end
 
      def rute_appointment(professional, date)
@@ -20,6 +20,20 @@ module Polycon
      def appointment_exist?(professional, date)
          File.exist?(self.rute_appointment(professional,date))
      end
-         
+
+     def polycon_exist?
+         Dir.exist?((Dir.home) + "/.polycon")
+     end
+
+    #metodo para verificar la carpeta polycon
+
+     def polycon(method)
+         if self.polycon_exist?
+             method.call
+         else
+             puts "Directory #{(Dir.home)}/.polycon does not exist\nCreate the directory .polycon in the personal directory \"Home\""
+         end
+     end
+
  end
 end
