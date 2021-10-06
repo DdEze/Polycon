@@ -110,18 +110,18 @@ puede requerir algún trabajo adicional de tu parte.
 * `bin/`: directorio donde reside cualquier archivo ejecutable, siendo el más notorio `polycon`
   que se utiliza como punto de entrada para el uso de la herramienta.
 
-## Documentaciòn
+## Documentación
 
 Los directorios con los nombres de lo profesionales están guardados en el directorio .polycon
 en el directorio personal "Home". El formato que e decidido para los nombre de los directorio de los profesionales es el nombre del profesional y si el nombre lleva espacio de remplazara con un "_" por ejemplo: El directorio de la profesional Alma Estevez seria Alma_Esteves. Y para el nombre de los archivos para el turno seria el siguiente formato de fecha: AAAA-MM-DD_HH-II.
 
-### Modulos para la pesistencia de profesionales y turnos
+### Módulos para la pesistencia de profesionales y turnos
 
 Para realizar los métodos para la persistencia e decidido crear tres módulos, uno para los métodos relacionado con las ruta de los directorios y archivos, otro para los métodos relacionados con la gestión de los profesionales y otro para los métodos relacionados con la gestión de turno.
 
 Las clases que pertenecen tanto al módulo de los profesionales y turno incluyen respectivamente los módulos nuevo que e creado para que las clases llamen a los métodos de los módulos para que puedan realizar la acción requerida.
 
-#### Modulo para las ruta de directorios y archivos
+#### Módulo para las ruta de directorios y archivos
 
 Para devolver o preguntar por una ruta de un directorio utilice la clases Dir que provee el lenguaje, para devolver la ruta del directorio use el método home de la clase Dir que devuelve el directorio "home" sumado al directorio /.polycon seguido del nombre del profesional. Y para preguntar si existe un directorio de un profesional use el método exist?
 que provee la clase Dir.
@@ -130,13 +130,13 @@ Para los archivo es algo parecido a lo hecho con los directorios, para devolver 
 
 Otro método que agregue a este modulo es un método que devuelve un mensaje si el directorio .polycon no esta creado para guardar los directorio de los profesionales y si esta carpeta existe que realice la acción requerida.
 
-#### Modulo para la gestion de los profesionales
+#### Módulo para la gestion de los profesionales
 
 Para la realización de los métodos para la gestión de profesionales, decidí que el modulo que contiene estos métodos incluya el módulo que devuelven y pregunta por la rutas para la realización de estos métodos.
 
 Para para manipular y crear los directorios que representaría la persistencia de los profesionales utilize la clase Dir y para borrar un directorio utlice le método rm_rf de la clase FileUtils.
 
-#### Modulo para la gestión de los turnos
+#### Módulo para la gestión de los turnos
 
 Para la realización de los métodos para la gestión de turno, también hice que incluya el módulo que contiene los métodos que devuelven y pregunta por la existencia de los directorios y archivos.
 
