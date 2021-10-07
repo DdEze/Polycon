@@ -17,7 +17,7 @@ module Polycon
              delete = Proc.new do
                 if self.professional_exist?(professional)
                       FileUtils.rm_rf(self.rute_professional(professional))
-                      puts "This professional was successfully deleted"
+                      puts "This professional was successfully deleted and his appointments canceled"
                 else
                       puts "This professional does not exist"
                 end
@@ -27,7 +27,7 @@ module Polycon
 
          def list_professionals
              list = Proc.new do
-                 puts (Dir.entries(Dir.home + "/.Polycon")).select {|f| !File.directory? f}
+                 puts (Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
              end
              self.polycon(list)
          end
