@@ -117,26 +117,28 @@ en el directorio personal "Home". El formato que e decidido para los nombre de l
 
 ### Módulos para la pesistencia de profesionales y turnos
 
-Para realizar los métodos para la persistencia e decidido crear tres módulos, uno para los métodos relacionado con las ruta de los directorios y archivos, otro para los métodos relacionados con la gestión de los profesionales y otro para los métodos relacionados con la gestión de turno.
+Para realizar los métodos para la persistencia e decidido crear dos clases y un módulos, un módulo para los métodos relacionado con las ruta de los directorios y archivos, una clase para los métodos relacionados con la gestión de los profesionales y la otra clase para los métodos relacionados con la gestión de turno.
 
-Las clases que pertenecen tanto al módulo de los profesionales y turno incluyen respectivamente los módulos nuevo que e creado para que las clases llamen a los métodos de los módulos para que puedan realizar la acción requerida.
+Las clases que pertenecen tanto al módulo Professionals y Appointements utilisan las clase Professional y Appointment respectivamente.
 
 #### Módulo para las ruta de directorios y archivos
 
-Para devolver o preguntar por una ruta de un directorio utilice la clases Dir que provee el lenguaje, para devolver la ruta del directorio use el método home de la clase Dir que devuelve el directorio "home" sumado al directorio /.polycon seguido del nombre del profesional. Y para preguntar si existe un directorio de un profesional use el método exist?
+Para devolver o preguntar por una ruta de un directorio o archivo cree un módulo llamado Patch que posee métodos que realizan dichas acciones.
+ 
+Estos metodos utilizan la clases Dir que provee el lenguaje, para devolver la ruta del directorio use el método home de la clase Dir que devuelve el directorio "home" sumado al directorio /.polycon seguido del nombre del profesional. Y para preguntar si existe un directorio de un profesional use el método exist?
 que provee la clase Dir.
 
 Para los archivo es algo parecido a lo hecho con los directorios, para devolver la ruta de un turno de un profesional, primero hay que devolver la ruta del directorio del profesional más el nombre del archivo que se quiera devolver. Y para preguntar si existe un archivo utilice el metodo exist? que provee la clase File.
 
 Otro método que agregue a este modulo es un método que devuelve un mensaje si el directorio .polycon no esta creado para guardar los directorio de los profesionales y si esta carpeta existe que realice la acción requerida.
 
-#### Módulo para la gestion de los profesionales
+#### Clase Professional para la gestión de los profesionales
 
-Para la realización de los métodos para la gestión de profesionales, decidí que el modulo que contiene estos métodos incluya el módulo que devuelven y pregunta por la rutas para la realización de estos métodos.
+Para la realización de los métodos para la gestión de profesionales, decidí que la clase Professional módulo Patch que contiene los metodos que devuelven y pregunta por la rutas para la realización de estos métodos.
 
 Para para manipular y crear los directorios que representaría la persistencia de los profesionales utilize la clase Dir y para borrar un directorio utlice le método rm_rf de la clase FileUtils.
 
-#### Módulo para la gestión de los turnos
+#### Clase Appointment para la gestión de los turnos
 
 Para la realización de los métodos para la gestión de turno, también hice que incluya el módulo que contiene los métodos que devuelven y pregunta por la existencia de los directorios y archivos.
 
