@@ -12,9 +12,13 @@ module Polycon
             end
         end
 
-        def valid_phone(number, method)
+        def valid_phone?(number)
+             (number.to_i.to_s.length == 10)
+        end
+
+        def error_phone(number, method)
             begin
-                if (number.to_i.is_a? Integer) && (number.to_s.length == 10)
+                if self.valid_phone?(number)
                      self.polycon(method)
                 else
                      raise
@@ -67,7 +71,7 @@ module Polycon
                      puts "Incorrect date"
                  end
             end
-            self.valid_phone(phone, create)
+            self.error_phone(phone, create)
         end
 
         def show
@@ -144,9 +148,8 @@ module Polycon
                  file.close
                  puts "Up-to-date appointment"
            end
-           if options.key?(:phone)
-             edit = Proc.new do self.professional_message(edit) end
-             self.valid_phone(options[:phone], edit)
+           if options.key?(:phone) && !self.valid_phone?(options[:phone])
+             puts "Invalid phone number, be sure to enter a phone number"
            else
              self.professional_message(edit)
            end
