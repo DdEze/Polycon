@@ -30,7 +30,7 @@ module Polycon
             date_format= self.date_format(date)
             create = Proc.new do
                  if (Time.now <= Time.parse(date)) && (self.professional_exist?(professional)) && !self.appointment_exist?(professional, date_format)
-                     file=File.open(self.rute_appointment(professional, date),"w")
+                     file=File.open(self.rute_appointment(professional, date_format),"w")
                      file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
                      file.close
                      puts "Appointments created correctly"
@@ -48,9 +48,9 @@ module Polycon
         def show_appointment(date, professional)
            date_format= self.date_format(date)
            show = Proc.new do
-                puts "Appointment\nProfessional: #{professional}\nDate: #{date_format}\n#{File.read(self.rute_appointment(professional, date))}"
+                puts "Appointment\nProfessional: #{professional}\nDate: #{date}\n#{File.read(self.rute_appointment(professional, date_format))}"
            end
-           self.professional_message(professional,date,show)
+           self.professional_message(professional,date_format,show)
         end
 
         def cancel_appointment(date, professional)
