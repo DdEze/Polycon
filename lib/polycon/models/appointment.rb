@@ -76,7 +76,7 @@ module Polycon
 
         def show
            show = Proc.new do
-                puts "Appointment\nProfessional: #{@professional}\nDate: #{@date}\n#{File.read(self.rute_appointment(@professional, @date))}"
+                puts "Appointment\nProfessional: #{@professional}\nDate: #{@date.gsub("_"," ")}\n#{File.read(self.rute_appointment(@professional, @date))}"
            end
            self.professional_message(show)
         end
