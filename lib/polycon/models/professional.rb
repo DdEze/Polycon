@@ -41,10 +41,10 @@ module Polycon
          def self.rename(old_name, new_name)
              extend Patch
              rename = Proc.new do
-                 if self.professional_exist?(old_name)
+                 if self.professional_exist?(old_name) && !self.professional_exist?(new_name)
                      FileUtils.mv(self.rute_professional(old_name), self.rute_professional(new_name))
                      puts "Up-to-date professional"
-                 elsif self.professional_exist?(new_name)
+                 elsif self.professional_exist?(old_name) && self.professional_exist?(new_name)
                      puts "You can't change to that name"
                  else
                      puts "This professional does not exist"
