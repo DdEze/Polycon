@@ -1,9 +1,9 @@
-require './lib/polycon/models/m_appointments'
+require './lib/polycon/models/appointment'
 module Polycon
   module Commands
     module Appointments
       class Create < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'Create an appointment'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -19,12 +19,12 @@ module Polycon
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.create_appointmet(date, professional, name, surname, phone, notes)
+          (Appointment.new(date, professional)).create(name, surname, phone, notes)
         end
       end
 
       class Show < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'Show details for an appointment'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -36,12 +36,12 @@ module Polycon
 
         def call(date:, professional:)
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.show_appointment(date, professional)
+          (Appointment.new(date, professional)).show
         end
       end
 
       class Cancel < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'Cancel an appointment'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -53,12 +53,12 @@ module Polycon
 
         def call(date:, professional:)
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.cancel_appointment(date, professional)
+          (Appointment.new(date, professional)).cancel
         end
       end
 
       class CancelAll < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'Cancel all appointments for a professional'
 
         argument :professional, required: true, desc: 'Full name of the professional'
@@ -69,12 +69,12 @@ module Polycon
 
         def call(professional:)
           #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.cancel_all_appointment(professional)
+          Appointment.cancel_all(professional)
         end
       end
 
       class List < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'List appointments for a professional, optionally filtered by a date'
 
         argument :professional, required: true, desc: 'Full name of the professional'
@@ -88,12 +88,12 @@ module Polycon
 
         def call(professional:)
           #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.list_appointmets(professional)
+          Appointment.list(professional)
         end
       end
 
       class Reschedule < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'Reschedule an appointment'
 
         argument :old_date, required: true, desc: 'Current date of the appointment'
@@ -106,13 +106,13 @@ module Polycon
 
         def call(old_date:, new_date:, professional:)
           #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.reschedule_appointment(old_date, new_date, professional)
+          Appointment.reschedule(old_date, new_date, professional)
           #
         end
       end
 
       class Edit < Dry::CLI::Command
-        include Appointmets_methods
+
         desc 'Edit information for an appointments'
 
         argument :date, required: true, desc: 'Full date for the appointment'
@@ -130,7 +130,7 @@ module Polycon
 
         def call(date:, professional:, **options)
           #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          self.edit_appointment(date, professional, **options)
+          (Appointment.new(date, professional)).edit(**options)
         end
       end
     end
