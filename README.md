@@ -112,37 +112,37 @@ puede requerir algún trabajo adicional de tu parte.
 
 ## Documentación
 
-Los directorios con los nombres de lo profesionales están guardados en el directorio .polycon
-en el directorio personal "Home". El formato que e decidido para los nombre de los directorio de los profesionales es el nombre del profesional y si el nombre lleva espacio de remplazara con un "_" por ejemplo: El directorio de la profesional Alma Estevez seria Alma_Esteves. Y para el nombre de los archivos para el turno seria el siguiente formato de fecha: AAAA-MM-DD_HH-II.
+Para el formato del los nombres de directorios y archivos use el formato dicho por el enunciado del trabajo practico integrador, los directorios con los nombres de lo profesionales están guardados en el directorio .polycon en el directorio personal "Home". El formato para los nombre de los directorio de los profesionales seria el nombre del profesional y si el nombre lleva espacio de remplazara con un "_" por ejemplo: El directorio de la profesional Alma Estevez seria Alma_Esteves. Y para el nombre de los archivos para los turnos seria el siguiente formato de fecha: AAAA-MM-DD_HH-II.
 
-### Módulos para la pesistencia de profesionales y turnos
+### Módulos para la persistencia de profesionales y turnos
 
 Para realizar los métodos para la persistencia e decidido crear dos clases y un módulos, un módulo para los métodos relacionado con las ruta de los directorios y archivos, una clase para los métodos relacionados con la gestión de los profesionales y la otra clase para los métodos relacionados con la gestión de turno.
 
-Las clases que pertenecen tanto al módulo Professionals y Appointements utilisan las clase Professional y Appointment respectivamente.
+Las clases que pertenecen tanto al módulo Professionals y Appointements utilizan las clase Professional y Appointment respectivamente.
 
 #### Módulo para las ruta de directorios y archivos
 
 Para devolver o preguntar por una ruta de un directorio o archivo cree un módulo llamado Patch que posee métodos que realizan dichas acciones.
  
-Estos metodos utilizan la clases Dir que provee el lenguaje, para devolver la ruta del directorio use el método home de la clase Dir que devuelve el directorio "home" sumado al directorio /.polycon seguido del nombre del profesional. Y para preguntar si existe un directorio de un profesional use el método exist?
-que provee la clase Dir.
+Estos métodos utilizan la clases Dir que provee el lenguaje, para devolver la ruta del directorio use el método home de la clase Dir que devuelve el directorio "home" sumado al directorio /.polycon seguido del nombre del profesional. Y para preguntar si existe un directorio de un profesional use el método exist? que provee la clase Dir.
 
-Para los archivo es algo parecido a lo hecho con los directorios, para devolver la ruta de un turno de un profesional, primero hay que devolver la ruta del directorio del profesional más el nombre del archivo que se quiera devolver. Y para preguntar si existe un archivo utilice el metodo exist? que provee la clase File.
+Para los archivo es algo parecido a lo hecho con los directorios, para devolver la ruta de un turno de un profesional, primero hay que devolver la ruta del directorio del profesional más el nombre del archivo que se quiera devolver. Y para preguntar si existe un archivo utilice el método exist? que provee la clase File.
 
-Otro método que agregue a este modulo es un método que devuelve un mensaje si el directorio .polycon no esta creado para guardar los directorio de los profesionales y si esta carpeta existe que realice la acción requerida.
+Otro método que agregue a este modulo es un método que devuelve un mensaje si el directorio   .polycon no esta creado para guardar los directorios de los profesionales y si esta carpeta existe que realice la acciones requeridas.
 
 #### Clase Professional para la gestión de los profesionales
 
-Para la realización de los métodos para la gestión de profesionales, decidí que la clase Professional módulo Patch que contiene los metodos que devuelven y pregunta por la rutas para la realización de estos métodos.
+Para la realización de los métodos para la gestión de profesionales, decidí que la clase Professional incluya el módulo Patch que contiene los métodos que devuelven y pregunta por la existencia de las rutas de los directorios de los profesionales.
 
-Para para manipular y crear los directorios que representaría la persistencia de los profesionales utilize la clase Dir y para borrar un directorio utlice le método rm_rf de la clase FileUtils.
+Para para manipular y crear los directorios que representaría la persistencia de los profesionales utilice los métodos de la clase Dir y para borrar un directorio utlice el método rm_rf de la clase FileUtils.
 
 #### Clase Appointment para la gestión de los turnos
 
-Para la realización de los métodos para la gestión de turno, también hice que incluya el módulo que contiene los métodos que devuelven y pregunta por la existencia de los directorios y archivos.
+Para la realización de los métodos para la gestión de turno, también hice que incluya el módulo que contiene los métodos que devuelven y preguntan por la existencia de los directorios y archivos.
 
 Para editar y crear los archivos utilice el método open de la clase File, para borrar tanto un archivo o todos los archivos de un directorio utilice el método rm_rf de la clase FileUtils, esta clase también la utilice para el método que cambia el nombre de un archivo.
 
-Otra clase que utilice en este modulo, es la clase Time, con ella parceo la fecha que viene como string a una clase Time. Esto lo utilizo para preguntar por la fecha para que no se pueda sacar un turno con una fecha pasada, también con esta clase tengo un método que me asegura que cuando llegue dos fechas iguales con formato diferente por parte del día como puede ser 2021-12-05 13:00 y 2021-12-5 13:00 pasen a un mismo formato que completando la fecha si no es de dos dígitos con un cero adelante.
+Otra clase que utilice en este modulo, es la clase DateTime, con ella parceo la fecha que viene como string a una clase Time. Esto lo utilizo para preguntar por la fecha para que no se pueda sacar un turno con una fecha pasada, también con esta clase tengo un método que me asegura que cuando llegue dos fechas iguales con formato diferente por parte del día como puede ser 2021-12-05 13:00 y 2021-12-5 13:00 pasen a un mismo formato que completa el día de la fecha si no es de dos dígitos con un cero adelante.
+
+También en esta clase agregue métodos de validación que verifica, que la fecha o numero de teléfono ingresado por el usuario sea en realidad una fecha o un numero de teléfono.
 
