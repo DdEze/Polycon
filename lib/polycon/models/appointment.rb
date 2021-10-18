@@ -13,7 +13,7 @@ module Polycon
         end
 
         def valid_phone?(number)
-             (number.to_i.to_s.length == 10)
+             ((number.to_i.to_s.length) == 10 && number.length == 10)
         end
 
         def error_phone(number, method)
@@ -27,7 +27,6 @@ module Polycon
                  puts "Invalid phone number, be sure to enter a phone number"
             end
         end
-
 
         def date_format(date_format)
             begin
@@ -114,18 +113,20 @@ module Polycon
             self.polycon(list)
         end
 
-        def self.reschedule(old_date,new_date)
-            old_date_format= self.date_format(old_date)
-            new_date_format= self.date_format(new_date)
+        def self.reschedule(old_date,new_date, professional)
+            extend Patch
+            appointment=Appointment.new(old_date,professional)
+            old_date_format= appointment.date_format(old_date)
+            new_date_format= appointment.date_format(new_date)
             reschedule = Proc.new do
                if (self.appointment_exist?(professional, new_date_format))
-                   puts "This appointment already exists"
+                    puts "This appointment already exists"
                else
                     FileUtils.mv(self.rute_appointment(professional,old_date_format), self.rute_appointment(professional,new_date_format))
                     puts "Up-to-date appointment"
                end
             end
-            self.professional_message(reschedule)
+            appointment.professional_message(reschedule)
         end
 
         def edit(**options)

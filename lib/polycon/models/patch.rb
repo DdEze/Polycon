@@ -34,6 +34,5 @@ module Polycon
              puts "Directory #{(Dir.home)}/.polycon does not exist\nCreate the directory .polycon in the personal directory \"Home\""
          end
      end
-
  end
 end
