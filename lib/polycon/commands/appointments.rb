@@ -133,6 +133,24 @@ module Polycon
           (Appointment.new(date, professional)).edit(**options)
         end
       end
+
+      class List_Per_Day < Dry::CLI::Command
+        desc 'list all the appointmnts of a particular day'
+
+        argument :date, required: true, desc: 'Full date for the appointment'
+        option :professional, required: false, desc: 'Full name of the professional'
+
+        example [
+          '"2021-09-16" # Show all appointments on that date.',
+          '"2021-09-16" --professional="Alma Estevez" --name="New name"# Shows all the shifts of that date of the professional Alma Estevez.',
+        ]
+
+        def call (date:, professional: nil)
+            Appointment.list_per_day(date, professional)
+        end
+
+      end
+
     end
   end
 end

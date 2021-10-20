@@ -155,5 +155,31 @@ module Polycon
              self.professional_message(edit)
            end
         end
+
+        def self.filter_per_day(date, professional)
+            extend Patch
+            new_date = DateTime.parse(date).strftime("%F")
+            warn (Dir.entries(self.rute_professional(professional))).select {|f| (!File.directory? f) && (DateTime.parse(f).strftime("%F")==new_date)}
+        end
+
+        def self.list_per_day(date, professional)
+            extend Patch
+            list = nil
+            if professional == nil
+                list = Proc.new do
+                    array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
+                    array.each {|pro| Appointment.filter_per_day(date, pro)}
+                end
+                self.polycon(list)
+            elsif self.professional_exist?(professional)
+                list = Proc.new do
+                    Appointment.filter_per_day(date, professional)
+                end
+                self.polycon(list)
+            else
+                warn "No existe"
+            end
+        end
+
      end
 end
