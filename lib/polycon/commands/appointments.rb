@@ -1,4 +1,5 @@
 require './lib/polycon/models/appointment'
+
 module Polycon
   module Commands
     module Appointments
@@ -146,7 +147,7 @@ module Polycon
         ]
 
         def call (date:, professional: nil)
-            Appointment.list_per_day(date, professional)
+            Appointment.build(date, professional)
         end
 
       end

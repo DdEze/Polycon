@@ -1,5 +1,7 @@
 require './lib/polycon/models/patch'
 require 'date'
+require "erb"
+
 module Polycon
      class Appointment include Patch
 
@@ -10,6 +12,14 @@ module Polycon
             rescue
                   warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
             end
+        end
+
+        def date
+         @date
+        end
+
+        def professional
+         @professional
         end
 
         def valid_phone?(number)
@@ -159,26 +169,61 @@ module Polycon
         def self.filter_per_day(date, professional)
             extend Patch
             new_date = DateTime.parse(date).strftime("%F")
-            warn (Dir.entries(self.rute_professional(professional))).select {|f| (!File.directory? f) && (DateTime.parse(f).strftime("%F")==new_date)}
+            array = (Dir.entries(self.rute_professional(professional))).map {|f| 
+            if  (!File.directory? f) && (DateTime.parse(f).strftime("%F")==new_date)
+               Appointment.new(f.to_s,professional)
+            end
+            }.compact
         end
 
-        def self.list_per_day(date, professional)
-            extend Patch
+        def list_per_day
             list = nil
-            if professional == nil
+            if @professional == nil
                 list = Proc.new do
+                    array2 = []
                     array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
-                    array.each {|pro| Appointment.filter_per_day(date, pro)}
+                    array.each do |pro| array2 = array2 + Appointment.filter_per_day(@date, pro)
+                    end
+                    array2
                 end
-                self.polycon(list)
-            elsif self.professional_exist?(professional)
+            else self.professional_exist?(@professional)
                 list = Proc.new do
-                    Appointment.filter_per_day(date, professional)
+                    Appointment.filter_per_day(@date, @professional)
                 end
-                self.polycon(list)
-            else
-                warn "No existe"
             end
+            self.polycon(list)
+        end
+
+        def self.build(date, professional)
+            my_appointments = Appointment.new(date, professional).list_per_day
+            templete = <<-ERB
+             <html lang="en">
+             <head>
+                 <meta charset="UTF-8">
+                 <meta http-equiv="X-UA-Compatible" content="IE-edge">
+                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                 <title>Document</title>
+             </head>
+             <body>
+                <h1> Appointments <%= date %>  </h1>
+                 <table>
+                     <tr>
+                         <th> Professional </th>
+                         <th> Hour </th>
+                     </tr>
+                     <% appointments.each do |appointment| %>
+                         <tr>           
+                         <td> <%= appointment.professional.gsub("_"," ") %> </td>
+                         <td> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
+                         </tr>
+                     <%end%>
+                 </table>
+             </body>
+             </html>
+            ERB
+            erb = ERB.new(templete)
+            output = erb.result_with_hash(appointments: my_appointments, date:date)
+            File.write(Dir.home + '/polycon_appointment.html', output)
         end
 
      end
