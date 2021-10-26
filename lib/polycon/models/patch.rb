@@ -31,7 +31,8 @@ module Polycon
          if self.polycon_exist?
              method.call
          else
-             warn "Directory #{(Dir.home)}/.polycon does not exist\nCreate the directory .polycon in the personal directory \"Home\""
+             warn "Directory #{(Dir.home)}/.polycon does not exist\nA .polycon directory will be created in your home directory"
+             Dir.mkdir(Dir.home + "/.polycon")
          end
      end
  
