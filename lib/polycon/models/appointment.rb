@@ -1,9 +1,11 @@
 require './lib/polycon/models/patch'
+require './lib/polycon/models/filter'
+require './lib/polycon/models/professional'
 require 'date'
 require "erb"
 
 module Polycon
-     class Appointment include Patch
+    class Appointment include Patch
 
         def initialize(date, professional)
             begin
@@ -51,7 +53,7 @@ module Polycon
                 if self.professional_exist?(@professional)
                     self.date_message(method) 
                 else
-                    puts "The professional does not exist"
+                    warn "The professional does not exist"
                 end
             end
             self.polycon(message)
@@ -166,7 +168,22 @@ module Polycon
            end
         end
 
-        def self.filter_per_day(date, professional)
+        def name_of_patient
+            file= File.read(self.rute_appointment(@professional, @date)).split("\n")
+            file[0].gsub("Name: ","")
+        end
+
+        def surname_of_patient
+            file= File.read(self.rute_appointment(@professional, @date)).split("\n")
+            file[1].gsub("Surname: ","")
+        end
+
+        def phone_of_patient
+            file= File.read(self.rute_appointment(@professional, @date)).split("\n")
+            file[2].gsub("Phone: ","")
+        end
+
+        def self.filter_by_day(date, professional)
             extend Patch
             new_date = DateTime.parse(date).strftime("%F")
             array = (Dir.entries(self.rute_professional(professional))).map {|f| 
@@ -176,26 +193,26 @@ module Polycon
             }.compact
         end
 
-        def list_per_day
-            list = nil
-            if @professional == nil
-                list = Proc.new do
-                    array2 = []
-                    array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
-                    array.each do |pro| array2 = array2 + Appointment.filter_per_day(@date, pro)
-                    end
-                    array2
-                end
-            else self.professional_exist?(@professional)
-                list = Proc.new do
-                    Appointment.filter_per_day(@date, @professional)
-                end
+        def self.list_by_day(date, professional)
+            extend Patch
+            if professional.nil?
+                 array2 = []
+                 array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
+                 array.each do |pro| array2 = array2 + Appointment.filter_by_day(date, pro)
+                 end
+                 array2
+            else 
+                 begin
+                     Appointment.filter_by_day(date, professional)
+                 rescue
+                     raise
+                 end
             end
-            self.polycon(list)
         end
 
-        def self.build(date, professional)
-            my_appointments = Appointment.new(date, professional).list_per_day
+        def self.day(date, professional)
+         begin
+            appointments = Appointment.list_by_day(date, professional).sort{ |app1, app2| app1.date <=> app2.date }
             templete = <<-ERB
              <html lang="en">
              <head>
@@ -205,16 +222,23 @@ module Polycon
                  <title>Document</title>
              </head>
              <body>
-                <h1> Appointments <%= date %>  </h1>
-                 <table>
-                     <tr>
-                         <th> Professional </th>
+                <h1 align="center"> Appointments of <%= DateTime.parse(date).strftime("%F") %>  </h1>
+                <br></br>
+                <table align="center" border= 2>
+                     <tr bgcolor="aqua" border= 2>
                          <th> Hour </th>
+                         <th> Professional </th>
+                         <th> Name of patient </th>
+                         <th> Surname of patient </th>
+                         <th> Phone of patient </th>
                      </tr>
                      <% appointments.each do |appointment| %>
-                         <tr>           
-                         <td> <%= appointment.professional.gsub("_"," ") %> </td>
+                         <tr bgcolor="silver" border= 2>           
                          <td> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
+                         <td> <%= appointment.professional.gsub("_"," ") %> </td>
+                         <td> <%= appointment.name_of_patient %> </td>
+                         <td> <%= appointment.surname_of_patient %> </td>
+                         <td> <%= appointment.phone_of_patient %> </td>
                          </tr>
                      <%end%>
                  </table>
@@ -222,9 +246,84 @@ module Polycon
              </html>
             ERB
             erb = ERB.new(templete)
-            output = erb.result_with_hash(appointments: my_appointments, date:date)
+            output = erb.result_with_hash(appointments: appointments, date:date)
             File.write(Dir.home + '/polycon_appointment.html', output)
+         rescue
+             warn "The professional does not exist"
+         end
         end
 
-     end
+        def self.professionals_week(professional, week)
+            extend Patch
+            if (professional.nil?)
+              array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
+              array=array.map{|prof| 
+                  if Professional.appointments_week?(prof,week)
+                     Professional.new(prof)
+                  end
+                }
+            elsif self.professional_exist?(professional)
+                 array=[Professional.new(professional)]
+            #else
+                #raise
+            end
+        end
+
+        def self.week(date, professional)
+            extend Filter
+            extend Patch
+            #begin
+            monday = Appointment.monday_week(date)
+            professionals= Appointment.professionals_week(professional, monday)
+            templete = <<-ERB
+             <html lang="en">
+             <head>
+                 <meta charset="UTF-8">
+                 <meta http-equiv="X-UA-Compatible" content="IE-edge">
+                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                 <title>Document</title>
+             </head>
+             <body>
+                <h1 align="center"> Appointments <%= monday.strftime("%F") %> to  <%= (monday + 6).strftime("%F") %>  </h1>
+                <br></br>
+                <table align="center" border= 2>
+                     <tr bgcolor="aqua" border= 2>
+                     <th> Professional </th>
+                     <th> Hour </th>
+                     <%range = monday..(monday + 6)%>
+                     <% range.to_a.each do | date | %>
+                        <th>  <%= date.strftime("%A") %>  </th>
+                     <% end %>
+                     </tr>
+                     <% date=monday %>
+                     <% while (date.hour != 20) || (date.minute != 30)
+                          professionals.each do |professional| %>
+                             <tr bgcolor="silver" border= 2>
+                                 <td> <%= professional.name.gsub("_"," ") %> </td>
+                                 <td> <%= date.strftime("%R") %> </td>
+                                 <td> <%= professional.name_of_patient(date.strftime("%F_%R")) %> </td>
+                                 <td> <%= professional.name_of_patient((date + 1).strftime("%F_%R")) %> </td>
+                                 <td> <%= professional.name_of_patient((date + 2).strftime("%F_%R")) %> </td>
+                                 <td> <%= professional.name_of_patient((date + 3).strftime("%F_%R")) %> </td>
+                                 <td> <%= professional.name_of_patient((date + 4).strftime("%F_%R")) %> </td>
+                                 <td> <%= professional.name_of_patient((date + 6).strftime("%F_%R")) %> </td>
+                                 <td> <%= professional.name_of_patient((date + 7).strftime("%F_%R")) %></td>
+                             </tr>
+                         <%end
+                           date = date + (30/1440.0)
+                      end%>
+                    
+                 </table>
+             </body>
+             </html>
+            ERB
+
+            erb = ERB.new(templete)
+            output = erb.result_with_hash( professionals: professionals, monday: monday)
+            File.write(Dir.home + '/polycon_appointment.html', output)
+            #rescue
+                #warn "no"
+            #end
+        end
+    end
 end

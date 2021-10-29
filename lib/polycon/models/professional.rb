@@ -1,9 +1,14 @@
 require './lib/polycon/models/patch'
+
 module Polycon
      class Professional include Patch
 
          def initialize(professional)
              @professional=professional
+         end
+
+         def name
+            @professional
          end
         
          def create
@@ -51,6 +56,25 @@ module Polycon
                  end
              end
              self.polycon(rename) 
+         end
+
+         def self.appointments(professional)
+            extend Patch
+            (Dir.entries(self.rute_professional(professional))).select {|f| !File.directory? f}
+         end
+
+         def name_of_patient(day)
+             if (self.appointment_exist?(@professional, day))
+                 Appointment.new(day, @professional).name_of_patient
+             else
+                "---"
+             end
+         end
+
+         def self.appointments_week?(professional, week)
+             range = week..(week + 6)
+             array = Professional.appointments(professional).select {|appointment| range.include?(DateTime.parse(appointment))}
+             (array.size == 0)
          end
      end
 end
