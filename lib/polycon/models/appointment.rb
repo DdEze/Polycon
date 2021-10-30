@@ -1,19 +1,15 @@
 require './lib/polycon/models/patch'
 require './lib/polycon/models/filter'
 require './lib/polycon/models/professional'
-require 'date'
 require "erb"
 
 module Polycon
     class Appointment include Patch
+        # "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
 
         def initialize(date, professional)
-            begin
-                 @date = self.date_format(date)
-                 @professional = professional
-            rescue
-                  warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
-            end
+         @date = self.date_format(date)
+         @professional = professional
         end
 
         def date
@@ -25,27 +21,26 @@ module Polycon
         end
 
         def valid_phone?(number)
-             ((number.to_i.to_s.length) == 10 && number.length == 10)
+            ((number.to_i.to_s.length) == 10 && number.length == 10)
         end
 
-        def error_phone(number, method)
-            begin
-                if self.valid_phone?(number)
-                     self.polycon(method)
-                else
-                     raise
-                end
-            rescue
-                 warn "Invalid phone number, be sure to enter a phone number"
-            end
+        def valid_date?(date)
+             d = DateTime.parse(date)
+             (9..20).include?(d.hour) && (d.min == 0 || d.min == 30) && (d.hour != 20 || d.min != 30)
+        end
+
+        def error_valid(date, number, method)
+             if self.valid_phone?(number) && self.valid_date?(date)
+                 self.polycon(method)
+             elsif !self.valid_phone?(number)
+                 warn "Invalid phone number, be sure to enter a phone number" 
+             else
+                 warn "Appointments are given at the hour or hour and a half, between 9 and 20, enter the corresponding time"
+             end
         end
 
         def date_format(date_format)
-            begin
-             return DateTime.parse(date_format).strftime("%F_%R")
-            rescue
-             puts "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
-            end
+            DateTime.parse(date_format).strftime("%F_%R")
         end
         
         def professional_message(method)
@@ -67,29 +62,41 @@ module Polycon
             end
         end
 
-        def create(name, surname, phone, notes)
-            create = Proc.new do
-                 if (DateTime.now <= DateTime.parse(@date)) && (self.professional_exist?(@professional)) && !self.appointment_exist?(@professional, @date)
-                     file=File.open(self.rute_appointment(@professional, @date),"w")
-                     file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
-                     file.close
-                     warn "Appointments created correctly"
-                 elsif !self.professional_exist?(@professional)
-                     warn "The professional does not exist"
-                 elsif  self.appointment_exist?(@professional, @date)
-                     warn "Appointments already existing"
+        def self.professional_message(method, professional)
+            extend Patch
+            menssage= Proc.new do
+                 if  (professional.nil?) || (self.professional_exist?(professional))
+                     method.call
                  else
-                     warn "Incorrect date"
+                     warn "The professional does not exist"
                  end
             end
-            self.error_phone(phone, create)
+            self.polycon(menssage)
+        end
+
+        def create(name, surname, phone, notes)
+            create = Proc.new do
+                if (DateTime.now <= DateTime.parse(@date)) && (self.professional_exist?(@professional)) && !self.appointment_exist?(@professional, @date)
+                 file=File.open(self.rute_appointment(@professional, @date),"w")
+                 file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
+                 file.close
+                 warn "Appointments created correctly"
+                elsif !self.professional_exist?(@professional)
+                 warn "The professional does not exist"
+                elsif  self.appointment_exist?(@professional, @date)
+                 warn "Appointments already existing"
+                else
+                 warn "Incorrect date"
+                end
+            end
+            self.error_valid(date, phone, create)
         end
 
         def show
-           show = Proc.new do
-                warn "Appointment\nProfessional: #{@professional}\nDate: #{@date.gsub("_"," ")}\n#{File.read(self.rute_appointment(@professional, @date))}"
-           end
-           self.professional_message(show)
+            show = Proc.new do
+             warn "Appointment\nProfessional: #{@professional}\nDate: #{@date.gsub("_"," ")}\n#{File.read(self.rute_appointment(@professional, @date))}"
+            end
+             self.professional_message(show)
         end
 
         def cancel
@@ -211,46 +218,45 @@ module Polycon
         end
 
         def self.day(date, professional)
-         begin
-            appointments = Appointment.list_by_day(date, professional).sort{ |app1, app2| app1.date <=> app2.date }
-            templete = <<-ERB
-             <html lang="en">
-             <head>
-                 <meta charset="UTF-8">
-                 <meta http-equiv="X-UA-Compatible" content="IE-edge">
-                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                 <title>Document</title>
-             </head>
-             <body>
-                <h1 align="center"> Appointments of <%= DateTime.parse(date).strftime("%F") %>  </h1>
-                <br></br>
-                <table align="center" border= 2>
-                     <tr bgcolor="aqua" border= 2>
-                         <th> Hour </th>
-                         <th> Professional </th>
-                         <th> Name of patient </th>
-                         <th> Surname of patient </th>
-                         <th> Phone of patient </th>
-                     </tr>
-                     <% appointments.each do |appointment| %>
-                         <tr bgcolor="silver" border= 2>           
-                         <td> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
-                         <td> <%= appointment.professional.gsub("_"," ") %> </td>
-                         <td> <%= appointment.name_of_patient %> </td>
-                         <td> <%= appointment.surname_of_patient %> </td>
-                         <td> <%= appointment.phone_of_patient %> </td>
+          day=Proce.new do
+             appointments = Appointment.list_by_day(date, professional).sort{ |app1, app2| app1.date <=> app2.date }
+             templete = <<-ERB
+                 <html lang="en">
+                 <head>
+                     <meta charset="UTF-8">
+                     <meta http-equiv="X-UA-Compatible" content="IE-edge">
+                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                     <title>Appointments by day</title>
+                 </head>
+                 <body>
+                     <h1 align="center"> Appointments of <%= DateTime.parse(date).strftime("%F") %>  </h1>
+                     <br></br>
+                     <table align="center" border= 2>
+                         <tr bgcolor="aqua" border= 2>
+                             <th> Hour </th>
+                             <th> Professional </th>
+                             <th> Name of patient </th>
+                             <th> Surname of patient </th>
+                             <th> Phone of patient </th>
                          </tr>
-                     <%end%>
-                 </table>
-             </body>
-             </html>
-            ERB
-            erb = ERB.new(templete)
-            output = erb.result_with_hash(appointments: appointments, date:date)
-            File.write(Dir.home + '/polycon_appointment.html', output)
-         rescue
-             warn "The professional does not exist"
-         end
+                         <% appointments.each do |appointment| %>
+                             <tr bgcolor="silver" border= 2>           
+                                 <td> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
+                                 <td> <%= appointment.professional.gsub("_"," ") %> </td>
+                                 <td> <%= appointment.name_of_patient %> </td>
+                                 <td> <%= appointment.surname_of_patient %> </td>
+                                 <td> <%= appointment.phone_of_patient %> </td>
+                             </tr>
+                        <%end%>
+                     </table>
+                 </body>
+                 </html>
+                ERB
+                erb = ERB.new(templete)
+                output = erb.result_with_hash(appointments: appointments, date:date)
+                File.write(Dir.home + '/polycon_appointments.html', output)
+            end
+            Appointment.professional_message(day, professional)
         end
 
         def self.professionals_week(professional, week)
@@ -261,69 +267,66 @@ module Polycon
                   if Professional.appointments_week?(prof,week)
                      Professional.new(prof)
                   end
-                }
+                }.compact
             elsif self.professional_exist?(professional)
                  array=[Professional.new(professional)]
-            #else
-                #raise
+            else
+                raise
             end
         end
 
         def self.week(date, professional)
             extend Filter
             extend Patch
-            #begin
-            monday = Appointment.monday_week(date)
-            professionals= Appointment.professionals_week(professional, monday)
-            templete = <<-ERB
-             <html lang="en">
-             <head>
-                 <meta charset="UTF-8">
-                 <meta http-equiv="X-UA-Compatible" content="IE-edge">
-                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                 <title>Document</title>
-             </head>
-             <body>
-                <h1 align="center"> Appointments <%= monday.strftime("%F") %> to  <%= (monday + 6).strftime("%F") %>  </h1>
-                <br></br>
-                <table align="center" border= 2>
-                     <tr bgcolor="aqua" border= 2>
-                     <th> Professional </th>
-                     <th> Hour </th>
-                     <%range = monday..(monday + 6)%>
-                     <% range.to_a.each do | date | %>
-                        <th>  <%= date.strftime("%A") %>  </th>
-                     <% end %>
-                     </tr>
-                     <% date=monday %>
-                     <% while (date.hour != 20) || (date.minute != 30)
-                          professionals.each do |professional| %>
-                             <tr bgcolor="silver" border= 2>
-                                 <td> <%= professional.name.gsub("_"," ") %> </td>
-                                 <td> <%= date.strftime("%R") %> </td>
-                                 <td> <%= professional.name_of_patient(date.strftime("%F_%R")) %> </td>
-                                 <td> <%= professional.name_of_patient((date + 1).strftime("%F_%R")) %> </td>
-                                 <td> <%= professional.name_of_patient((date + 2).strftime("%F_%R")) %> </td>
-                                 <td> <%= professional.name_of_patient((date + 3).strftime("%F_%R")) %> </td>
-                                 <td> <%= professional.name_of_patient((date + 4).strftime("%F_%R")) %> </td>
-                                 <td> <%= professional.name_of_patient((date + 6).strftime("%F_%R")) %> </td>
-                                 <td> <%= professional.name_of_patient((date + 7).strftime("%F_%R")) %></td>
-                             </tr>
-                         <%end
-                           date = date + (30/1440.0)
-                      end%>
-                    
-                 </table>
-             </body>
-             </html>
-            ERB
-
-            erb = ERB.new(templete)
-            output = erb.result_with_hash( professionals: professionals, monday: monday)
-            File.write(Dir.home + '/polycon_appointment.html', output)
-            #rescue
-                #warn "no"
-            #end
+            week=Proc.new do
+             monday = Appointment.monday_week(date)
+             professionals= Appointment.professionals_week(professional, monday)
+             templete = <<-ERB
+                 <html lang="en">
+                 <head>
+                     <meta charset="UTF-8">
+                     <meta http-equiv="X-UA-Compatible" content="IE-edge">
+                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                     <title>Appointments by week</title>
+                 </head>
+                 <body>
+                     <h1 align="center"> Appointments <%= monday.strftime("%F") %> to  <%= (monday + 6).strftime("%F") %>  </h1>
+                     <br></br>
+                     <table align="center" border= 2>
+                         <tr bgcolor="aqua" border= 2>
+                             <th> Professional </th>
+                             <th> Hour </th>
+                             <%range = monday..(monday + 6)%>
+                             <% range.to_a.each do | date | %>
+                             <th>  <%= date.strftime("%A") %>  </th>
+                             <% end %>
+                         </tr>
+                             <% date=monday %>
+                             <% while (date.hour != 20) || (date.minute != 30)
+                                 professionals.each do |professional| %>
+                                     <tr bgcolor="silver" border= 2>
+                                         <td> <%= professional.name.gsub("_"," ") %> </td>
+                                         <td> <%= date.strftime("%R") %> </td>
+                                         <td> <%= professional.name_of_patient(date.strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.name_of_patient((date + 1).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.name_of_patient((date + 2).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.name_of_patient((date + 3).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.name_of_patient((date + 4).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.name_of_patient((date + 5).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.name_of_patient((date + 6).strftime("%F_%R")) %></td>
+                                     </tr>
+                                  <%end
+                                  date = date + (30/1440.0)
+                               end%>            
+                        </table>
+                    </body>
+                    </html>
+                ERB
+                erb = ERB.new(templete)
+                output = erb.result_with_hash( professionals: professionals, monday: monday)
+                File.write(Dir.home + '/polycon_appointments.html', output)
+            end
+            Appointment.professional_message(week, professional)
         end
     end
 end

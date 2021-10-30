@@ -29,7 +29,7 @@ module Polycon
 
      def polycon(method)
          if self.polycon_exist?
-             method.call
+              method.call
          else
              warn "Directory #{(Dir.home)}/.polycon does not exist\nA .polycon directory will be created in your home directory"
              Dir.mkdir(Dir.home + "/.polycon")

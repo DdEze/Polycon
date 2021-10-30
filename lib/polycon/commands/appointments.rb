@@ -23,7 +23,11 @@ module Polycon
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
           
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          (Appointment.new(date, professional)).create(name, surname, phone, notes)
+          begin
+           Appointment.new(date, professional).create(name, surname, phone, notes)
+          rescue
+            warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
+          end
 
         end
       end
@@ -42,7 +46,11 @@ module Polycon
         def call(date:, professional:)
          
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          (Appointment.new(date, professional)).show
+          begin
+              (Appointment.new(date, professional)).show
+          rescue
+              warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
+          end
 
         end
       end
@@ -61,8 +69,11 @@ module Polycon
         def call(date:, professional:)
          
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          (Appointment.new(date, professional)).cancel
-
+          begin
+             (Appointment.new(date, professional)).cancel
+          rescue
+              warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
+          end
         end
       end
 
@@ -120,7 +131,11 @@ module Polycon
         def call(old_date:, new_date:, professional:)
           
           #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          Appointment.reschedule(old_date, new_date, professional)
+          begin
+             Appointment.reschedule(old_date, new_date, professional)
+          rescue
+             warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
+          end
           #
         
         end
@@ -146,7 +161,11 @@ module Polycon
         def call(date:, professional:, **options)
 
           #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          (Appointment.new(date, professional)).edit(**options)
+          begin
+           (Appointment.new(date, professional)).edit(**options)
+          rescue
+            warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
+          end
 
         end
       end
@@ -159,14 +178,17 @@ module Polycon
         option :professional, required: false, desc: 'Full name of the professional'
 
         example [
-          '"2021-09-16" # Show all appointments on that date.',
-          '"2021-09-16" --professional="Alma Estevez" --name="New name"# Shows all the shifts of that date of the professional Alma Estevez.',
+          '"2021-09-16" # Show all appointments on that date in html file.',
+          '"2021-09-16" --professional="Alma Estevez" --name="New name"# SShow all appointments on that date in html file of the professional Alma Estevez.',
         ]
 
         def call (date:, professional: nil)
-
-          Appointment.day(date, professional)
-
+          
+           begin
+             Appointment.day(date, professional)
+           rescue
+             warn "Make sure the date you enter is in the format yyyy-mm-dd"
+           end
         end
 
       end
@@ -179,13 +201,16 @@ module Polycon
         option :professional, required: false, desc: 'Full name of the professional'
 
         example [
-          '"2021-09-16" # Show all appointments on that date.',
-          '"2021-09-16" --professional="Alma Estevez" --name="New name"# Shows all the shifts of that date of the professional Alma Estevez.',
+          '"2021-09-16" # Show all appointments in that week in html file.',
+          '"2021-09-16" --professional="Alma Estevez" --name="New name"# Show all appointments in that week in html file of the professional Alma Estevez.',
         ]
 
         def call (date:, professional: nil)
-
-            Appointment.week(DateTime.parse(date).strftime("%F_09:00"),professional)
+           begin
+              Appointment.week(DateTime.parse(date).strftime("%F_09:00"),professional)
+           rescue
+             warn "Make sure the date you enter is in the format yyyy-mm-dd hh"
+           end
         end
 
       end
