@@ -25,9 +25,11 @@ module Polycon
 
          def delete
              delete = Proc.new do
-                if self.professional_exist?(@professional)
+                if self.professional_exist?(@professional) && (Dir.empty?(self.rute_professional(@professional)))
                       FileUtils.rm_rf(self.rute_professional(@professional))
-                      warn "This professional was successfully deleted and his appointments canceled"
+                      warn "#{@professional} was removed from the system"
+                elsif (!Dir.empty?(self.rute_professional(@professional)))
+                      warn "To delete #{@professional} from the system first cancel your appointments"
                 else
                       warn "This professional does not exist"
                 end
