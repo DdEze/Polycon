@@ -160,5 +160,7 @@ list_by_week muestra en una grilla todos los turnos de una semana en particular 
 
 La ambas grilla quedan guardadas en la carpeta "polycon_appointments.html" en la carpeta home, por lo tanto si se ejecuta uno de los dos comando sobrescribe lo que tenia antes.
 
+Para hacer las grilla utilice el sistema de plantilla que proporciona la librería ERB, para la creación del documento html.
+
 
 
