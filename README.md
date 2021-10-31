@@ -156,7 +156,7 @@ Para el TPI 2 agregue dos comandos nuevos para appointments, estos son: list_by_
 
 list_by_day muestra una grilla de todos los turnos de un día en particular de un o de los profesionales, esta grilla contiene la información del horario del turno, la información del paciente y el profesional a que le corresponde el turno.
 
-list_by_week muestra en una grilla todos los turnos de una semana en particular de un o de los profesionales, esta grilla contiene los horarios de los turno verticalmente (para los horarios decidí que los turnos solo se puedan sacar entre las 8 hasta la 20 y que solo se pueda sacar turno en una hora puntual o en la hora y media), y horizontalmente los días de la semana y el profesional del turno. En la grilla si existe el turno en la semana mostrara el nombre y apellido del paciente, si en la semana no tiene turno para un horario, en la grilla se mostrara "---".
+list_by_week muestra en una grilla todos los turnos de una semana en particular de un o de los profesionales, esta grilla contiene los horarios de los turno verticalmente (para los horarios decidí que los turnos solo se puedan sacar entre las 8 hasta la 20 y que solo se pueda sacar turno en una hora puntual o en la hora y media), y horizontalmente los días de la semana y el profesional del turno. En la grilla si existe el turno en la semana mostrara el nombre y apellido del paciente, si en la semana no tiene turno para un horario, en la grilla se mostrara "Sin turno".
 
 La ambas grilla quedan guardadas en la carpeta "polycon_appointments.html" en la carpeta home, por lo tanto si se ejecuta uno de los dos comando sobrescribe lo que tenia antes.
 
