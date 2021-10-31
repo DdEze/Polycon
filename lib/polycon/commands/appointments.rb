@@ -179,7 +179,7 @@ module Polycon
 
         example [
           '"2021-09-16" # Show all appointments on that date in html file.',
-          '"2021-09-16" --professional="Alma Estevez" --name="New name"# SShow all appointments on that date in html file of the professional Alma Estevez.',
+          '"2021-09-16" --professional="Alma Estevez" #Show all appointments on that date in html file of the professional Alma Estevez.',
         ]
 
         def call (date:, professional: nil)
@@ -202,7 +202,7 @@ module Polycon
 
         example [
           '"2021-09-16" # Show all appointments in that week in html file.',
-          '"2021-09-16" --professional="Alma Estevez" --name="New name"# Show all appointments in that week in html file of the professional Alma Estevez.',
+          '"2021-09-16" --professional="Alma Estevez" #Show all appointments in that week in html file of the professional Alma Estevez.',
         ]
 
         def call (date:, professional: nil)
