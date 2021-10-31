@@ -148,7 +148,7 @@ También en esta clase agregue métodos de validación que verifica, que la fech
 
 ### Corrección del TPI 1
 
-Se corrigió el método reschedule de appointments que funcionaba mal y se cambiaron los puts, también corregí algunas validaciones que andaban mal y el método delete de professionals que no hacia realmente los que tenia que hacer, ahora elimina el profesional si no tiene turno, si tiene turno primero se tiene que cancelar los turnos y después borrar los turnos
+Se corrigió el método reschedule de appointments que funcionaba mal y se cambiaron los puts, también corregí algunas validaciones que andaban mal y el método delete de professionals que no hacia realmente los que tenia que hacer, ahora elimina el profesional si no tiene turno, si tiene turno primero se tiene que cancelar los turnos y después borrar los turnos. Otra función que agrege es que si la carpeta .polycon no existe, cuando se intente hacer algun comando se cree esta carpeta.
 
 ### TPI 2
 
