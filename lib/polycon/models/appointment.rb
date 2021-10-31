@@ -26,7 +26,7 @@ module Polycon
 
         def valid_date?(date)
              d = DateTime.parse(date)
-             (9..20).include?(d.hour) && (d.min == 0 || d.min == 30) && (d.hour != 20 || d.min != 30)
+             (8..20).include?(d.hour) && (d.min == 0 || d.min == 30) && (d.hour != 20 || d.min != 30)
         end
 
         def error_valid(date, number, method)

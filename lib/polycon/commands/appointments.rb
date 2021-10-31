@@ -207,7 +207,7 @@ module Polycon
 
         def call (date:, professional: nil)
            begin
-              Appointment.week(DateTime.parse(date).strftime("%F_09:00"),professional)
+              Appointment.week(DateTime.parse(date).strftime("%F_08:00"),professional)
            rescue
              warn "Make sure the date you enter is in the format yyyy-mm-dd hh"
            end
