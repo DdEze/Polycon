@@ -69,7 +69,7 @@ module Polycon
              if (self.appointment_exist?(@professional, day))
                  "#{Appointment.new(day, @professional).surname_of_patient} #{Appointment.new(day, @professional).name_of_patient}"
              else
-                " ----- "
+                " Sin turno "
              end
          end
 
