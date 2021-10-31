@@ -184,11 +184,11 @@ module Polycon
 
         def call (date:, professional: nil)
           
-           begin
+           #begin
              Appointment.day(date, professional)
-           rescue
-             warn "Make sure the date you enter is in the format yyyy-mm-dd"
-           end
+           #rescue
+             #warn "Make sure the date you enter is in the format yyyy-mm-dd"
+           #end
         end
 
       end
@@ -206,11 +206,11 @@ module Polycon
         ]
 
         def call (date:, professional: nil)
-           begin
+           #begin
               Appointment.week(DateTime.parse(date).strftime("%F_08:00"),professional)
-           rescue
-             warn "Make sure the date you enter is in the format yyyy-mm-dd hh"
-           end
+           #rescue
+             #warn "Make sure the date you enter is in the format yyyy-mm-dd hh"
+           #end
         end
 
       end

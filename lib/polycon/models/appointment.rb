@@ -35,7 +35,7 @@ module Polycon
              elsif !self.valid_phone?(number)
                  warn "Invalid phone number, be sure to enter a phone number" 
              else
-                 warn "Appointments are given at the hour or hour and a half, between 9 and 20, enter the corresponding time"
+                 warn "Appointments are given at the hour or hour and a half, between 8 and 20, enter the corresponding time"
              end
         end
 
@@ -218,7 +218,7 @@ module Polycon
         end
 
         def self.day(date, professional)
-          day=Proce.new do
+          day=Proc.new do
              appointments = Appointment.list_by_day(date, professional).sort{ |app1, app2| app1.date <=> app2.date }
              templete = <<-ERB
                  <html lang="en">
@@ -241,11 +241,11 @@ module Polycon
                          </tr>
                          <% appointments.each do |appointment| %>
                              <tr bgcolor="silver" border= 2>           
-                                 <td> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
-                                 <td> <%= appointment.professional.gsub("_"," ") %> </td>
-                                 <td> <%= appointment.name_of_patient %> </td>
-                                 <td> <%= appointment.surname_of_patient %> </td>
-                                 <td> <%= appointment.phone_of_patient %> </td>
+                                 <td align="center"> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
+                                 <td align="center"> <%= appointment.professional.gsub("_"," ") %> </td>
+                                 <td align="center"> <%= appointment.name_of_patient %> </td>
+                                 <td align="center"> <%= appointment.surname_of_patient %> </td>
+                                 <td align="center"> <%= appointment.phone_of_patient %> </td>
                              </tr>
                         <%end%>
                      </table>
@@ -307,13 +307,13 @@ module Polycon
                                      <tr bgcolor="silver" border= 2>
                                          <td> <%= professional.name.gsub("_"," ") %> </td>
                                          <td> <%= date.strftime("%R") %> </td>
-                                         <td> <%= professional.name_of_patient(date.strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.name_of_patient((date + 1).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.name_of_patient((date + 2).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.name_of_patient((date + 3).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.name_of_patient((date + 4).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.name_of_patient((date + 5).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.name_of_patient((date + 6).strftime("%F_%R")) %></td>
+                                         <td> <%= professional.data_of_patient(date.strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.data_of_patient((date + 1).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.data_of_patient((date + 2).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.data_of_patient((date + 3).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.data_of_patient((date + 4).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.data_of_patient((date + 5).strftime("%F_%R")) %> </td>
+                                         <td> <%= professional.data_of_patient((date + 6).strftime("%F_%R")) %></td>
                                      </tr>
                                   <%end
                                   date = date + (30/1440.0)

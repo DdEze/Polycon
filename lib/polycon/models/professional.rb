@@ -65,11 +65,11 @@ module Polycon
             (Dir.entries(self.rute_professional(professional))).select {|f| !File.directory? f}
          end
 
-         def name_of_patient(day)
+         def data_of_patient(day)
              if (self.appointment_exist?(@professional, day))
-                 Appointment.new(day, @professional).name_of_patient
+                 "#{Appointment.new(day, @professional).surname_of_patient} #{Appointment.new(day, @professional).name_of_patient}"
              else
-                "---"
+                " ----- "
              end
          end
 
