@@ -146,3 +146,19 @@ Otra clase que utilice en este modulo, es la clase DateTime, con ella parceo la 
 
 También en esta clase agregue métodos de validación que verifica, que la fecha o numero de teléfono ingresado por el usuario sea en realidad una fecha o un numero de teléfono.
 
+### Corrección del TPI 1
+
+Se corrigió el método reschedule de appointments que funcionaba mal y se cambiaron los puts, también corregí algunas validaciones que andaban mal y el método delete de professionals que no hacia realmente los que tenia que hacer, ahora elimina el profesional si no tiene turno, si tiene turno primero se tiene que cancelar los turnos y después borrar los turnos
+
+### TPI 2
+
+Para el TPI 2 agregue dos comandos nuevos para appointments, estos son: list_by_day y list_by_week.
+
+list_by_day muestra una grilla de todos los turnos de un día en particular de un o de los profesionales, esta grilla contiene la información del horario del turno, la información del paciente y el profesional a que le corresponde el turno.
+
+list_by_week muestra en una grilla todos los turnos de una semana en particular de un o de los profesionales, esta grilla contiene los horarios de los turno verticalmente (para los horarios decidí que los turnos solo se puedan sacar entre las 8 hasta la 20 y que solo se pueda sacar turno en una hora puntual o en la hora y media), y horizontalmente los días de la semana y el profesional del turno. En la grilla si existe el turno en la semana mostrara el nombre y apellido del paciente, si en la semana no tiene turno para un horario, en la grilla se mostrara "---".
+
+La ambas grilla quedan guardadas en la carpeta "polycon_appointments.html" en la carpeta home, por lo tanto si se ejecuta uno de los dos comando sobrescribe lo que tenia antes.
+
+
+
