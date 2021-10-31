@@ -233,16 +233,16 @@ module Polycon
                      <br></br>
                      <table align="center" border= 2>
                          <tr bgcolor="aqua" border= 2>
-                             <th> Hour </th>
                              <th> Professional </th>
+                             <th> Hour </th>
                              <th> Name of patient </th>
                              <th> Surname of patient </th>
                              <th> Phone of patient </th>
                          </tr>
                          <% appointments.each do |appointment| %>
                              <tr bgcolor="silver" border= 2>           
-                                 <td align="center"> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
                                  <td align="center"> <%= appointment.professional.gsub("_"," ") %> </td>
+                                 <td align="center"> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
                                  <td align="center"> <%= appointment.name_of_patient %> </td>
                                  <td align="center"> <%= appointment.surname_of_patient %> </td>
                                  <td align="center"> <%= appointment.phone_of_patient %> </td>
@@ -305,15 +305,15 @@ module Polycon
                              <% while (date.hour != 20) || (date.minute != 30)
                                  professionals.each do |professional| %>
                                      <tr bgcolor="silver" border= 2>
-                                         <td> <%= professional.name.gsub("_"," ") %> </td>
-                                         <td> <%= date.strftime("%R") %> </td>
-                                         <td> <%= professional.data_of_patient(date.strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.data_of_patient((date + 1).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.data_of_patient((date + 2).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.data_of_patient((date + 3).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.data_of_patient((date + 4).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.data_of_patient((date + 5).strftime("%F_%R")) %> </td>
-                                         <td> <%= professional.data_of_patient((date + 6).strftime("%F_%R")) %></td>
+                                         <td align="center"> <%= professional.name.gsub("_"," ") %> </td>
+                                         <td align="center"> <%= date.strftime("%R") %> </td>
+                                         <td align="center"> <%= professional.data_of_patient(date.strftime("%F_%R")) %> </td>
+                                         <td align="center"> <%= professional.data_of_patient((date + 1).strftime("%F_%R")) %> </td>
+                                         <td align="center"> <%= professional.data_of_patient((date + 2).strftime("%F_%R")) %> </td>
+                                         <td align="center"> <%= professional.data_of_patient((date + 3).strftime("%F_%R")) %> </td>
+                                         <td align="center"> <%= professional.data_of_patient((date + 4).strftime("%F_%R")) %> </td>
+                                         <td align="center"> <%= professional.data_of_patient((date + 5).strftime("%F_%R")) %> </td>
+                                         <td align="center"> <%= professional.data_of_patient((date + 6).strftime("%F_%R")) %></td>
                                      </tr>
                                   <%end
                                   date = date + (30/1440.0)
