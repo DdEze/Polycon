@@ -5,7 +5,6 @@ require "erb"
 
 module Polycon
     class Appointment include Patch
-        # "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
 
         def initialize(date, professional)
          @date = self.date_format(date)
