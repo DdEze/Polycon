@@ -124,7 +124,11 @@ module Polycon
            extend Patch
            list = Proc.new do
                  if self.professional_exist?(professional)
-                     warn (Dir.entries(self.rute_professional(professional))).select {|f| !File.directory? f}
+                     warn (Dir.entries(self.rute_professional(professional))).map {|f| 
+                     if !File.directory? f
+                        DateTime.parse(f).strftime("%F %R")
+                     end
+                     }.compact
                  else
                      warn "The professional does not exist"
                  end
