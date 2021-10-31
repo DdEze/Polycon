@@ -24,7 +24,7 @@ module Polycon
           
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           begin
-           Appointment.new(date, professional).create(name, surname, phone, notes)
+           warn Appointment.new(date, professional).create(name, surname, phone, notes)
           rescue
             warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
           end
@@ -47,7 +47,7 @@ module Polycon
          
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           begin
-              (Appointment.new(date, professional)).show
+              warn (Appointment.new(date, professional)).show
           rescue
               warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
           end
@@ -70,7 +70,7 @@ module Polycon
          
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           begin
-             (Appointment.new(date, professional)).cancel
+              warn (Appointment.new(date, professional)).cancel
           rescue
               warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
           end
@@ -90,7 +90,7 @@ module Polycon
         def call(professional:)
           
           #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          Appointment.cancel_all(professional)
+          warn Appointment.cancel_all(professional)
 
         end
       end
@@ -111,7 +111,7 @@ module Polycon
         def call(professional:)
           
           #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          Appointment.list(professional)
+          warn Appointment.list(professional)
 
         end
       end
@@ -132,7 +132,7 @@ module Polycon
           
           #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           begin
-             Appointment.reschedule(old_date, new_date, professional)
+             warn Appointment.reschedule(old_date, new_date, professional)
           rescue
              warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
           end
@@ -162,7 +162,7 @@ module Polycon
 
           #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
           begin
-           (Appointment.new(date, professional)).edit(**options)
+           warn (Appointment.new(date, professional)).edit(**options)
           rescue
             warn "Make sure the date you enter is in the format yyyy-mm-dd hh: mm"
           end
@@ -185,7 +185,7 @@ module Polycon
         def call (date:, professional: nil)
           
            begin
-             Appointment.day(date, professional)
+             warn Appointment.day(date, professional)
            rescue
              warn "Make sure the date you enter is in the format yyyy-mm-dd"
            end
@@ -207,7 +207,7 @@ module Polycon
 
         def call (date:, professional: nil)
            begin
-              Appointment.week(DateTime.parse(date).strftime("%F_08:00"),professional)
+              warn Appointment.week(DateTime.parse(date).strftime("%F_08:00"),professional)
            rescue
              warn "Make sure the date you enter is in the format yyyy-mm-dd hh"
            end

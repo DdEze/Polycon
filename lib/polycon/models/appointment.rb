@@ -33,9 +33,9 @@ module Polycon
              if self.valid_phone?(number) && self.valid_date?(date)
                  self.polycon(method)
              elsif !self.valid_phone?(number)
-                 warn "Invalid phone number, be sure to enter a phone number" 
+                 "Invalid phone number, be sure to enter a phone number" 
              else
-                 warn "Appointments are given at the hour or hour and a half, between 8 and 20, enter the corresponding time"
+                 "Appointments are given at the hour or hour and a half, between 8 and 20, enter the corresponding time"
              end
         end
 
@@ -48,7 +48,7 @@ module Polycon
                 if self.professional_exist?(@professional)
                     self.date_message(method) 
                 else
-                    warn "The professional does not exist"
+                   "The professional does not exist"
                 end
             end
             self.polycon(message)
@@ -58,7 +58,7 @@ module Polycon
             if self.appointment_exist?(@professional, @date)
                 method.call
             else
-                warn "There is no appointmets for this date"
+                "There is no appointmets for this date"
             end
         end
 
@@ -68,7 +68,7 @@ module Polycon
                  if  (professional.nil?) || (self.professional_exist?(professional))
                      method.call
                  else
-                     warn "The professional does not exist"
+                     "The professional does not exist"
                  end
             end
             self.polycon(menssage)
@@ -80,13 +80,13 @@ module Polycon
                  file=File.open(self.rute_appointment(@professional, @date),"w")
                  file.puts("Name: #{name}\nSurname: #{surname}\nPhone: #{phone}\nNotes: #{notes}")
                  file.close
-                 warn "Appointments created correctly"
+                 "Appointments created correctly"
                 elsif !self.professional_exist?(@professional)
-                 warn "The professional does not exist"
+                 "The professional does not exist"
                 elsif  self.appointment_exist?(@professional, @date)
-                 warn "Appointments already existing"
+                 "Appointments already existing"
                 else
-                 warn "Incorrect date"
+                 "Incorrect date"
                 end
             end
             self.error_valid(date, phone, create)
@@ -94,7 +94,7 @@ module Polycon
 
         def show
             show = Proc.new do
-             warn "Appointment\nProfessional: #{@professional}\nDate: #{@date.gsub("_"," ")}\n#{File.read(self.rute_appointment(@professional, @date))}"
+             "Appointment\nProfessional: #{@professional}\nDate: #{@date.gsub("_"," ")}\n#{File.read(self.rute_appointment(@professional, @date))}"
             end
              self.professional_message(show)
         end
@@ -102,7 +102,7 @@ module Polycon
         def cancel
            cancel = Proc.new do
                 FileUtils.rm_rf(self.rute_appointment(@professional,@date))
-                warn "Appointments canceled"
+                "Appointments canceled"
            end
            self.professional_message(cancel)
         end
@@ -112,9 +112,9 @@ module Polycon
             cancel_all = Proc.new do
                  if Dir.exist?(self.rute_professional(professional))
                      FileUtils.rm_rf(Dir.glob("#{self.rute_professional(professional)}/*"))
-                     warn "They were tired all the appointments of the professional #{professional}"
+                     "They were tired all the appointments of the professional #{professional}"
                  else
-                     warn "The proffsional does not exist"
+                     "The proffesional does not exist"
                  end
             end
             self.polycon(cancel_all)
@@ -124,13 +124,13 @@ module Polycon
            extend Patch
            list = Proc.new do
                  if self.professional_exist?(professional)
-                     warn (Dir.entries(self.rute_professional(professional))).map {|f| 
+                     (Dir.entries(self.rute_professional(professional))).map {|f| 
                      if !File.directory? f
                         DateTime.parse(f).strftime("%F %R")
                      end
-                     }.compact
+                     }.compact.sort{|app1, app2| DateTime.parse(app1) <=> DateTime.parse(app2)}
                  else
-                     warn "The professional does not exist"
+                     "The professional does not exist"
                  end
             end
             self.polycon(list)
@@ -143,10 +143,10 @@ module Polycon
             new_date_format= appointment.date_format(new_date)
             reschedule = Proc.new do
                if (self.appointment_exist?(professional, new_date_format))
-                    warn "This appointment already exists"
+                    "This appointment already exists"
                else
                     FileUtils.mv(self.rute_appointment(professional,old_date_format), self.rute_appointment(professional,new_date_format))
-                    warn "Up-to-date appointment"
+                    "Up-to-date appointment"
                end
             end
             appointment.professional_message(reschedule)
@@ -170,10 +170,10 @@ module Polycon
                  file=File.open(self.rute_appointment(@professional,@date),"w")
                  file.puts(array)
                  file.close
-                 warn "Up-to-date appointment"
+                 "Up-to-date appointment"
            end
            if options.key?(:phone) && !self.valid_phone?(options[:phone])
-             warn "Invalid phone number, be sure to enter a phone number"
+             "Invalid phone number, be sure to enter a phone number"
            else
              self.professional_message(edit)
            end
@@ -208,7 +208,7 @@ module Polycon
             extend Patch
             if professional.nil?
                  array2 = []
-                 array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
+                 array=Professional.list
                  array.each do |pro| array2 = array2 + Appointment.filter_by_day(date, pro)
                  end
                  array2
@@ -259,6 +259,7 @@ module Polycon
                 erb = ERB.new(templete)
                 output = erb.result_with_hash(appointments: appointments, date:date)
                 File.write(Dir.home + '/polycon_appointments.html', output)
+                "polycon_appointmentts.html .update"
             end
             Appointment.professional_message(day, professional)
         end
@@ -266,7 +267,7 @@ module Polycon
         def self.professionals_week(professional, week)
             extend Patch
             if (professional.nil?)
-              array=(Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
+              array=Professional.list
               array=array.map{|prof| 
                   if Professional.appointments_week?(prof,week)
                      Professional.new(prof)
@@ -329,6 +330,7 @@ module Polycon
                 erb = ERB.new(templete)
                 output = erb.result_with_hash( professionals: professionals, monday: monday)
                 File.write(Dir.home + '/polycon_appointments.html', output)
+                "polycon_appointmentts.html .update"
             end
             Appointment.professional_message(week, professional)
         end

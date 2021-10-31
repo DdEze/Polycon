@@ -14,10 +14,10 @@ module Polycon
          def create
              create = Proc.new do
                  if self.professional_exist?(@professional)
-                     warn "This professional already exists"
+                     "This professional already exists"
                  else
                      Dir.mkdir(self.rute_professional(@professional))
-                     warn "Creates a new professional named '#{@professional}'"
+                     "Creates a new professional named '#{@professional}'"
                  end
              end
              self.polycon(create)
@@ -27,11 +27,11 @@ module Polycon
              delete = Proc.new do
                 if self.professional_exist?(@professional) && (Dir.empty?(self.rute_professional(@professional)))
                       FileUtils.rm_rf(self.rute_professional(@professional))
-                      warn "#{@professional} was removed from the system"
-                elsif (!Dir.empty?(self.rute_professional(@professional)))
-                      warn "To delete #{@professional} from the system first cancel your appointments"
+                      "#{@professional} was removed from the system"
+                elsif (self.professional_exist?(@professional))&&(!Dir.empty?(self.rute_professional(@professional)))
+                      "To delete #{@professional} from the system first cancel your appointments"
                 else
-                      warn "This professional does not exist"
+                      "This professional does not exist"
                 end
              end
              self.polycon(delete)
@@ -40,7 +40,11 @@ module Polycon
          def self.list
              extend Patch
              list = Proc.new do
-                 warn (Dir.entries(Dir.home + "/.polycon")).select {|f| !File.directory? f}
+                 (Dir.entries(Dir.home + "/.polycon")).map {|f| 
+                     if !File.directory? f
+                         f.gsub("_", " ")
+                     end
+                     }.compact
              end
              self.polycon(list)
          end
@@ -50,19 +54,18 @@ module Polycon
              rename = Proc.new do
                  if self.professional_exist?(old_name) && !self.professional_exist?(new_name)
                      FileUtils.mv(self.rute_professional(old_name), self.rute_professional(new_name))
-                     warn "Up-to-date professional"
+                     "Up-to-date professional"
                  elsif self.professional_exist?(old_name) && self.professional_exist?(new_name)
-                     warn "You can't change to that name"
+                     "You can't change to that name"
                  else
-                     warn "This professional does not exist"
+                     "This professional does not exist"
                  end
              end
              self.polycon(rename) 
          end
 
          def self.appointments(professional)
-            extend Patch
-            (Dir.entries(self.rute_professional(professional))).select {|f| !File.directory? f}
+            Appointment.list(professional)
          end
 
          def data_of_patient(day)

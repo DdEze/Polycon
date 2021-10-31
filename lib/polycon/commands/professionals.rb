@@ -15,7 +15,7 @@ module Polycon
 
         def call(name:, **)
           #warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          (Professional.new(name)).create
+          warn (Professional.new(name)).create
           #
         end
       end
@@ -33,7 +33,7 @@ module Polycon
 
         def call(name: nil)
           #warn "TODO: Implementar borrado de la o el profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          (Professional.new(name)).delete
+          warn (Professional.new(name)).delete
           #
         end
       end
@@ -48,7 +48,7 @@ module Polycon
 
         def call(*)
           #warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          Professional.list
+          warn Professional.list
           #
         end
       end
@@ -66,7 +66,7 @@ module Polycon
 
         def call(old_name:, new_name:, **)
           #warn "TODO: Implementar renombrado de profesionales con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
-          Professional.rename(old_name, new_name)
+          warn Professional.rename(old_name, new_name)
           #
         end
       end
