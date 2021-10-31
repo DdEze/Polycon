@@ -243,7 +243,7 @@ module Polycon
                              <th> Phone of patient </th>
                          </tr>
                          <% appointments.each do |appointment| %>
-                             <tr bgcolor="silver" border= 2>           
+                             <tr bgcolor="E7DEDD" border= 2>           
                                  <td align="center"> <%= appointment.professional.gsub("_"," ") %> </td>
                                  <td align="center"> <%= DateTime.parse(appointment.date).strftime("%H:%M") %> </td>
                                  <td align="center"> <%= appointment.name_of_patient %> </td>
@@ -296,8 +296,8 @@ module Polycon
                  <body>
                      <h1 align="center"> Appointments <%= monday.strftime("%F") %> to  <%= (monday + 6).strftime("%F") %>  </h1>
                      <br></br>
-                     <table align="center" border= 2>
-                         <tr bgcolor="aqua" border= 2>
+                     <table align="center" border = 2>
+                         <tr bgcolor="aqua" border = 2>
                              <th> Professional </th>
                              <th> Hour </th>
                              <%range = monday..(monday + 6)%>
@@ -308,7 +308,7 @@ module Polycon
                              <% date=monday %>
                              <% while (date.hour != 20) || (date.minute != 30)
                                  professionals.each do |professional| %>
-                                     <tr bgcolor="silver" border= 2>
+                                     <tr bgcolor="E7DEDD" border = 2>
                                          <td align="center"> <%= professional.name.gsub("_"," ") %> </td>
                                          <td align="center"> <%= date.strftime("%R") %> </td>
                                          <td align="center"> <%= professional.data_of_patient(date.strftime("%F_%R")) %> </td>
