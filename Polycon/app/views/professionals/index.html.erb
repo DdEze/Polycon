@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+<div align="center">
+<h2>Profesionales</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @professionals.each do |professional| %>
+      <tr>
+        <td><%= professional.name %></td>
+        <td><%= professional.surname %></td>
+        <td><%= link_to 'Ver', professional %></td>
+        <td><%= link_to 'Ver turnos', professional_appointments_path(:professional_id => professional.id) %></td>
+        <td><%= link_to 'Editar', edit_professional_path(professional) %></td>
+        <td><%= link_to 'Borrar', professional, method: :delete, data: { confirm: '¿Estas seguro de borrar a este profesional?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @professionals, :previous_label => "« Anterior", :next_label => "Siguiente »" %>
+<br>
+<%= link_to 'Crear profesional', new_professional_path %>
+
+</div>
