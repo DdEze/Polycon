@@ -4,27 +4,27 @@
   <strong>Fecha del turno:</strong>
   <%= @appointment.date_format %>
 </h2>
-
+<br>
 <h5>
   <strong>Nombre del paciente:</strong>
   <%= @appointment.name %>
 </h5>
-
+<br>
 <h5>
   <strong>Apellido del paciente:</strong>
   <%= @appointment.surname %>
 </h5>
-
+<br>
 <h5>
   <strong>Telefono del paciente:</strong>
   <%= @appointment.phone %>
 </h5>
-
+<br>
 <h5>
   <strong>Notas:</strong>
   <%= @appointment.notes %>
 </h5>
-
+<br>
 <h5>
  <% if can? :update, @appointment %>
 <%= link_to 'Editar', edit_professional_appointment_path(@professional, @appointment) %> |

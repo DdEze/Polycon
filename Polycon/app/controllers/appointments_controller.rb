@@ -5,7 +5,7 @@ class AppointmentsController < ApplicationController
       
     # GET /appointments or /appointments.json
     def index
-        @appointments = Professional.find(params[:professional_id]).appointments.paginate({page: params[:page], per_page:10})
+        @appointments = Professional.find(params[:professional_id]).appointments.paginate({page: params[:page], per_page:5})
     end
       
     # GET /appointments/1 or /appointments/1.json
