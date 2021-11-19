@@ -4,7 +4,7 @@ class ProfessionalsController < ApplicationController
   #before_action :authorize
   # GET /professionals or /professionals.json
   def index
-    @professionals = Professional.paginate({page: params[:page], per_page:1}).all
+    @professionals = Professional.paginate({page: params[:page], per_page:10}).all
   end
 
   # GET /professionals/1 or /professionals/1.json

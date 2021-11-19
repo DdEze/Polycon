@@ -21,6 +21,10 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <div class="field">
+    <%= f.hidden_field :rol_id, :value => Rol.find(2).id %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Registrarse" %>
   </div>

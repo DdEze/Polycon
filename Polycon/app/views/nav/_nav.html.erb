@@ -1,12 +1,13 @@
 <div>
-  <nav class="nav navbar-light">
+  <nav class="nav navbar-expand-lg navbar-light bg-light">
       <% if user_signed_in? %>
-          <li class="nav-item"><%= link_to "Profesionales", "/professionals" , class:"nav-link" %></li>
-          <li class="nav-item"><%= link_to current_user.email, edit_user_registration_path, class:"nav-link" %></li>
-          <li class="nav-item"><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, class:"nav-link" %></li>
-      <% else %>
-          <li class="nav-item"><%= link_to "Registrarse", new_user_registration_path, class:"nav-link" %></li>
-          <li class="nav-item"><%= link_to "Ingresar", new_user_session_path, class:"nav-link" %></li>
+          <ul class="nav">
+            <li class="nav-item active"><%= link_to "Profesionales", "/professionals" , class:"nav-link" %></li>
+          </ul>
+          <ul class="nav" align="left">
+            <li class="nav-item active"><%= link_to current_user.email, edit_user_registration_path, class:"nav-link" %></li>
+            <li class="nav-item active"><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, class:"nav-link" %></li>
+          </ul>
       <% end %>
   </nav>
 </div>

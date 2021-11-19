@@ -5,10 +5,10 @@
 <table>
   <thead>
     <tr>
-      <th>Fecha del turno</th>
-      <th>Nombre del paciente</th>
-      <th>Apellido del paciente</th>
-      <th colspan="3"></th>
+      <th>Fecha</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -30,6 +30,7 @@
     <% end %>
   </tbody>
 </table>
+<br>
 <div class="pagination-wrapper">
    <div class="pagination">
      <%= will_paginate @appointments, :previous_label => "« Anterior", :next_label => "Siguiente »" %>
