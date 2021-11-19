@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h2>
+  <strong>Fecha del turno:</strong>
+  <%= @appointment.date_format %>
+</h2>
+
+<h5>
+  <strong>Nombre del paciente:</strong>
+  <%= @appointment.name %>
+</h5>
+
+<h5>
+  <strong>Apellido del paciente:</strong>
+  <%= @appointment.surname %>
+</h5>
+
+<h5>
+  <strong>Telefono del paciente:</strong>
+  <%= @appointment.phone %>
+</h5>
+
+<h5>
+  <strong>Notas:</strong>
+  <%= @appointment.notes %>
+</h5>
+
+<h5>
+ <% if can? :update, @appointment %>
+<%= link_to 'Editar', edit_professional_appointment_path(@professional, @appointment) %> |
+ <% end %>
+<%= link_to 'Volver', professional_appointments_path(@professional) %>

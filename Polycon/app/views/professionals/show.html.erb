@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+<h2>Datos del profesional<h2>
+<h5>
+  <strong>Nombre:</strong>
+  <%= @professional.name %>
+</h5>
+
+<h5>
+  <strong>Apellido:</strong>
+  <%= @professional.surname %>
+</h5>
+ <% if can? :update, @professional %>
+<%= link_to 'Editar', edit_professional_path(@professional) %> |
+<%end%>
+<%= link_to 'Volver', professionals_path %> |
+<%= link_to 'Turnos', professional_appointments_path(:professional_id => @professional.id) %>

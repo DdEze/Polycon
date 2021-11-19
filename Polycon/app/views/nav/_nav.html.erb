@@ -1,0 +1,12 @@
+<div>
+  <nav class="nav navbar-light">
+      <% if user_signed_in? %>
+          <li class="nav-item"><%= link_to "Profesionales", "/professionals" , class:"nav-link" %></li>
+          <li class="nav-item"><%= link_to current_user.email, edit_user_registration_path, class:"nav-link" %></li>
+          <li class="nav-item"><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, class:"nav-link" %></li>
+      <% else %>
+          <li class="nav-item"><%= link_to "Registrarse", new_user_registration_path, class:"nav-link" %></li>
+          <li class="nav-item"><%= link_to "Ingresar", new_user_session_path, class:"nav-link" %></li>
+      <% end %>
+  </nav>
+</div>
