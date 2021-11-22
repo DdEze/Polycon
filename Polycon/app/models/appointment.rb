@@ -5,7 +5,8 @@ class Appointment < ApplicationRecord
       scope: :professional_id,
       message: "Ya existe este turno" }
   validates :phone, numericality:{
-    only_integer: true}
+    only_integer: true}, length: { in: 8..15 }
+  validates_date :date, on_or_after: lambda {DateTime.tomorrow}, on_or_after_message: "La fecha debe ser a partir del #{DateTime.tomorrow}"
 
   def date_format
     date.strftime("%F %R")
