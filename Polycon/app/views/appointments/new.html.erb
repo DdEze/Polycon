@@ -2,4 +2,4 @@
 
 <%= render 'form', appointment: @appointment, professional: @professional %>
 
-<%= link_to 'Volver', professional_appointments_path(:professional_id => @professional.id) %>
+<%= link_to 'Volver', professional_appointments_path(:professional_id => @professional.id), class:"btn btn-info btn-sm" %>

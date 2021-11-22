@@ -1,0 +1,55 @@
+<div align = "center">
+  <%if professional.nil?%>
+    <h2>Turnos del dia <%= date.strftime("%F") %> </h2>
+  <%else%>
+    <h2>Turnos de <%= professional.surname_and_name%> del dia  <%= date.strftime("%F")%></h2>      
+  <%end%>
+  <table font-family= "Arial, Helvetica, sans-serif">
+    <thead>
+      <tr>
+        <th>Hora</th>
+          <%if professional.nil?%>
+            <th>Profesional</th>
+          <%end%>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Telefono</th>
+        </tr>
+     </thead>
+     <tbody>
+        <% appointments.each do |appointment| %>
+          <tr>
+            <td><%= appointment.date_hour %></td>
+            <%if professional.nil?%>
+              <td><%= appointment.data_professional %></td>
+            <%end%>
+            <td><%= appointment.name %></td>
+            <td><%= appointment.surname %></td>
+            <td><%= appointment.phone %></td>
+          </tr>
+        <% end %>
+      </tbody>
+  </table>
+</div>
+<style type="text/css">
+  table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 70%;
+  }
+  td, th {
+    border: 1px solid rgba(221, 221, 221, 0.753);
+    padding: 8px;
+    text-align: center;
+  }
+  tr:nth-child(even){background-color: #f2f2f2d0;}
+  tr:hover {background-color: #ddd;}
+  th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #2e6ab1;
+    color: white;
+    text-align: center;
+  }
+</style>

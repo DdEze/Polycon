@@ -38,8 +38,9 @@
 </div>
 <br>
 <% if can? :create, Appointment %>
-<%= link_to 'Crear un turno',new_professional_appointment_path(@professional) %> |
+<%= link_to 'Crear un turno',new_professional_appointment_path(@professional), class:"btn btn-info btn-sm" %> |
 <% end %>
 <% if can? :delete, Appointment %>
-<td><%= link_to 'Cancelar todos los turnos', destroy_all_professional_appointments_path(@professional), method: :delete, data: { confirm: '¿Estas seguro de cancelar todos los turnos?' } %></td>
+<td><%= link_to 'Cancelar todos los turnos', destroy_all_professional_appointments_path(@professional), method: :delete, data: { confirm: '¿Estas seguro de cancelar todos los turnos?' }, class:"btn btn-info btn-sm" %></td>
 <% end %>
+<%= render "appointments/g", professional: @professional%>

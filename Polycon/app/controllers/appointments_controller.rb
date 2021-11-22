@@ -5,7 +5,7 @@ class AppointmentsController < ApplicationController
       
     # GET /appointments or /appointments.json
     def index
-        @appointments = Professional.find(params[:professional_id]).appointments.paginate({page: params[:page], per_page:5})
+        @appointments = Professional.find(params[:professional_id]).appointments.paginate({page: params[:page], per_page:5}).reorder('date')
     end
       
     # GET /appointments/1 or /appointments/1.json
@@ -66,6 +66,27 @@ class AppointmentsController < ApplicationController
           format.json { head :no_content }
         end
     end
+
+    def download_day
+        date = DateTime.parse("#{(params["date(1i)".to_sym])}-#{(params["date(2i)".to_sym])}-#{(params["date(3i)".to_sym])}")
+        erb = ERB.new(File.read("./app/views/appointments/index_g_d.html.erb"))
+        if (params[:professional_id]) == ""
+            appointments = Appointment.where('date BETWEEN ? AND ?', (date - 1), (date + 1)).reorder('date')
+            title= "appointmets_#{date.strftime("%F")}"
+            output = erb.result_with_hash(appointments: appointments, date: date, professional:nil)
+        else
+            @professional = Professional.find(params[:professional_id])
+            appointments = @professional.appointments.where('date BETWEEN ? AND ?', (date - 1), (date + 1)).reorder('date')
+            output = erb.result_with_hash(appointments: appointments, date:date, professional:@professional)
+            title="#{@professional.surname_and_name.gsub(" ","_")}appointmets_#{date.strftime("%F")}"
+        end
+        File.write(Dir.home + "/#{title}.html", output)
+        redirect_to professionals_path
+    end
+
+    #def download_week
+        
+    #end
       
     private
     # Use callbacks to share common setup or constraints between actions.

@@ -1,12 +1,11 @@
 <p id="notice"><%= notice %></p>
-<div align="center">
 <h2>Profesionales</h2>
 
 <table>
   <thead>
     <tr>
-      <th>Nombre</th>
       <th>Apellido</th>
+      <th>Nombre</th>
       <th colspan="4"></th>
     </tr>
   </thead>
@@ -14,10 +13,10 @@
   <tbody>
     <% @professionals.each do |professional| %>
       <tr>
-        <td><%= professional.name %></td>
         <td><%= professional.surname %></td>
+        <td><%= professional.name %></td>
         <td><%= link_to 'Ver', professional, class:"btn btn-outline-info btn-sm" %></td>   
-        <td><%= link_to 'Ver turnos', professional_appointments_path(:professional_id => professional.id), class:"btn btn-outline-info btn-sm" %></td>
+        <td><%= link_to 'Ver turnos', professional_appointments_path(professional), class:"btn btn-outline-info btn-sm" %></td>
         <% if can? :update, @professional %>
         <td><%= link_to 'Editar', edit_professional_path(professional), class:"btn btn-outline-info btn-sm" %></td>
         <%end%>
@@ -36,6 +35,6 @@
 </div>
 <br>
 <% if can? :create, Professional %>
-<%= link_to 'Crear profesional', new_professional_path, class: "btn btn-link" %>
+<%= link_to 'Crear profesional', new_professional_path, class: "btn btn-link", class:"btn btn-info btn-sm" %>
 <% end %>
-</div>
+<%= render "appointments/g", professional: nil %>

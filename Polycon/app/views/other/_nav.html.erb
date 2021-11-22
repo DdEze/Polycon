@@ -1,13 +1,13 @@
 <div>
-  <nav class="navbar" style="background-color: #2e6ab1;">
-      <% if user_signed_in? %>
-          <ul class="nav">
-            <li class="nav-item active"><%= link_to "Profesionales", "/professionals" , class:"nav-link", :style=> 'color:white;'%></li>
-          </ul>
-          <ul class="nav justify-content-end">
-            <li class="nav-item active"><%= link_to current_user.email, edit_user_registration_path, class:"nav-link", :style=> 'color:white;' %></li>
-            <li class="nav-item active"><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, class:"nav-link", :style=> 'color:white;'%></li>
-          </ul>
-      <% end %>
-  </nav>
+  <% if user_signed_in? %>
+    <nav class="navbar" style="background-color: #2e6ab1;">
+      <ul class="nav">
+          <li class="nav-item active"><%= link_to "Profesionales", "/professionals" , class:"nav-link",:style=> 'color:white;'%></li>
+      </ul>
+      <ul class="nav justify-content-end">
+          <li class="nav-item active"><%= link_to current_user.email, edit_user_registration_path, class:"nav-link", :style=> 'color:white;' %></li>
+          <li class="nav-item active"><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, class:"nav-link", :style=> 'color:white;'%></li>
+      </ul>
+    </nav>
+  <% end %>
 </div>
