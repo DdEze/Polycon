@@ -1,23 +1,25 @@
-<%= form_with(model: nil, url:appointments_download_day_path) do |form| %>
+<%= form_with(model: nil, url:professionals_download_day_pfd_path) do |form| %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
     <br>
     <div class="field">
         <%= form.label :date, "Fecha de la grilla" %>
         <%= form.date_select :date, :start_year => DateTime.now.year, :end_year => DateTime.now.year + 5 %>
     </div>
-    <%if @professional.nil?%>
+    <%if professional.nil?%>
         <div class="field">
-            <%= form.hidden_field :professional_id, :value => @professional %>
+            <%= form.hidden_field :profes_id, :value => professional %>
         </div>
     <%else%>
         <div class="field">
-            <%= form.hidden_field :professional_id, :value => @professional.id %>
+            <%=professional.id%>
+            <%= form.hidden_field :profes_id, :value => professional.id %>
         </div>
     <%end%>
     <div class="actions">
         <%= form.submit "Generar grilla diaria", class:"btn btn-info btn-sm"%>
     </div>
     <div class="actions">
-        <%= form.submit "Generar grilla semanal", formaction: appointments_download_week_path, class:"btn btn-info btn-sm"%>
+        <%= form.submit "Generar grilla semanal", formaction: professionals_download_week_pdf_path, class:"btn btn-info btn-sm"%>
     </div>
 <% end %>
 

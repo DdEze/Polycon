@@ -8,4 +8,13 @@ class Professional < ApplicationRecord
     def surname_and_name
         "#{surname} #{name}"
     end
+
+    def appointment(date)
+      app = self.appointments.select {|a| a.date == date}.first
+      if app.nil?
+        "-----"
+      else
+        "#{app.surname} #{app.name}"
+      end
+    end
 end
