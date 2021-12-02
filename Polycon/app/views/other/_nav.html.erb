@@ -3,6 +3,9 @@
     <nav class="navbar" style="background-color: #2e6ab1;">
       <ul class="nav">
           <li class="nav-item active"><%= link_to "Profesionales", "/professionals" , class:"nav-link",:style=> 'color:white;'%></li>
+          <% if can? :read, User %>
+            <li class="nav-item active"><%= link_to "Usuarios", users_path , class:"nav-link",:style=> 'color:white;'%></li>
+          <%end%>
       </ul>
       <ul class="nav justify-content-end">
           <li class="nav-item active"><%= link_to current_user.email, edit_user_registration_path, class:"nav-link", :style=> 'color:white;' %></li>

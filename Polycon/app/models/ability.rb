@@ -5,16 +5,16 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    if user.rol_id == 1
+    if user.name_rol == "admin"
       can :manage, :all
     end
-    if user.rol_id == 2
+    if user.name_rol == "consultation"
       can :read, Professional
       can :show, Professional
       can :read, Appointment
       can :show, Appointment
     end
-    if user.rol_id == 3
+    if user.name_rol == "attendance"
       can :read, Professional
       can :show, Professional
       can :create, Professional

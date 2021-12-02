@@ -4,4 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :rol_id, presence: true
+
+  def name_rol
+    Rol.find(rol_id).name
+  end
 end

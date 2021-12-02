@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+<h2>Usuarios</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Rol<th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.name_rol %></td>
+        <td><%= "Otro" %></td>
+        <td><%="Administrador"%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<div class="pagination-wrapper">
+   <div class="pagination">
+      <%= will_paginate @users, :previous_label => "« Anterior", :next_label => "Siguiente »" %>
+   </div>
+</div>
+<br>
+<%= link_to 'Volver', :back, class: "btn btn-link", class:"btn btn-info btn-sm" %>
