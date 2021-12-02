@@ -5,10 +5,19 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Rol.create([{name:"Administración"}])
+Rol.create ([{name:"Consulta"}])
+Rol.create([{name: "Asistencia"}])
 
-Rol.create([name: "admin"])
-Rol.create([name:"consultation"])
-Rol.create([name:"attendance"])
 User.create([{email: 'admin@gmail.com', password: 'admin123', password_confirmation: 'admin123', rol_id: 1 }])
-User.create([{email: 'consultation@gmail.com', password: 'consultation123', password_confirmation: 'consultation123', rol_id: 2 }])
-User.create([{email: 'attendance@gmail.com', password: 'attendance123', password_confirmation: 'attendance123', rol_id: 3}])
+User.create([{email: 'consul@gmail.com', password: 'consul123', password_confirmation: 'consul123', rol_id: 2 }])
+User.create([{email: 'asis@gmail.com', password: 'asis123', password_confirmation: 'asis123', rol_id: 3}])
+
+for i in 1..15 do 
+    p = Professional.create(name:"name-#{i}" ,surname:"surname-#{i}")
+    for j in (1..40) do
+        date =  (rand(DateTime.now..(DateTime.now + 100))).strftime("%F_%H:00")
+        date = DateTime.parse(date)
+        Appointment.create(date:date, name:"name-#{i}-#{j}", surname:"surname-#{i}-#{j}", phone:(rand(221000000..2219999999)), notes:"pureba#{i}-#{j}", professional_id:p.id)
+    end
+end

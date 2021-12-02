@@ -29,12 +29,12 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Actualizar contraseña" %>
+    <%= f.submit "Actualizar contraseña", class:"btn btn-info btn-sm" %>
   </div>
 <% end %>
 <br>
 <h3>Cancelar mi cuenta</h3>
 <br>
-<%= button_to "Cancelar mi cuenta", registration_path(resource_name), data: { confirm: "¿Estas seguro de cancelar tu cuenta?" }, method: :delete %>
+<%= button_to "Cancelar mi cuenta", registration_path(resource_name), data: { confirm: "¿Estas seguro de cancelar tu cuenta?" }, method: :delete, class:"btn btn-info btn-sm" %>
 <br>
-<%= link_to "Volver", :back %>
+<%= link_to "Volver", :back, class:"btn btn-info btn-sm" %>
