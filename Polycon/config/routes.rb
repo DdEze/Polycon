@@ -8,8 +8,8 @@ Rails.application.routes.draw do
       end
     end
   end
-  post 'professionals/download_day_pfd', to: "appointments#download_day"
-  post 'professionals/download_week_pdf', to: "appointments#download_week"
+  post 'professionals/download_day', to: "appointments#download_day"
+  post 'professionals/download_week', to: "appointments#download_week"
   root to: 'professionals#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

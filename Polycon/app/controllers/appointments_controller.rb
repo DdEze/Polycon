@@ -81,8 +81,7 @@ class AppointmentsController < ApplicationController
             output = erb.result_with_hash(appointments: appointments, date:date, professional:@professional)
             title="#{@professional.surname_and_name.gsub(" ","_")}_appointmets_#{date.strftime("%F")}"
         end
-        File.write(Dir.home + "/#{title}.html", output)
-        redirect_to professionals_path
+        send_data(output, :filename =>"#{title}.html")
     end
 
     def download_week
@@ -96,10 +95,9 @@ class AppointmentsController < ApplicationController
             @professional = Professional.find(params[:profes_id])
             professionals = [@professional]
             output = erb.result_with_hash(professionals:professionals, date:@date, date_fin:@date_fin, professional:@professional)
-            title="#{@professional.surname_and_name.gsub(" ","_")}appointmets_week_#{@date.strftime("%F")}"
+            title="#{@professional.surname_and_name.gsub(" ","_")}_appointmets_week_#{@date.strftime("%F")}"
         end
-        File.write(Dir.home + "/#{title}.html", output)
-        redirect_to professionals_path
+        send_data(output, :filename =>"#{title}.html")
     end
       
     private

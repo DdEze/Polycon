@@ -3,6 +3,5 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  validates :rol, presence: true
-  enum rol: [:admin, :consultation, :attendance]
+  validates :rol_id, presence: true
 end
