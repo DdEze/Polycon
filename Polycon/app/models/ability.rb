@@ -5,16 +5,18 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    if user.name_rol == "Administración"
+    if user.rol.name == "Administración"
       can :manage, :all
     end
-    if user.name_rol == "Consulta"
+    if user.rol.name == "Consulta"
       can :read, Professional
       can :show, Professional
       can :read, Appointment
       can :show, Appointment
+      can :download_day, Appointment
+      can :download_week, Appointment
     end
-    if user.name_rol == "Asistencia"
+    if user.rol.name == "Asistencia"
       can :read, Professional
       can :show, Professional
       can :create, Professional

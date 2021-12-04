@@ -14,9 +14,13 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
-        <td><%= user.name_rol %></td>
-        <td><%= "Otro" %></td>
-        <td><%="Administrador"%></td>
+        <td><%= user.rol.name %></td>
+        <% if user.rol.name == "Consulta"%>
+          <td><%= link_to 'Asistencia', user_attendance_path(:id => user.id), method: :put, data: { confirm: '¿Estas seguro de pasar a este usuario a Asistencia?' }, class:"btn btn-outline-info btn-sm" %></td>
+        <% else %>
+          <td><%= link_to 'Consulta', user_consultation_path(:id => user.id), method: :put, data: { confirm: '¿Estas seguro de pasar a este usuario a Consulta?' }, class:"btn btn-outline-info btn-sm" %></td>
+        <% end %>
+        <td><%= link_to 'Administración', user_admin_path(:id => user.id), method: :put, data: { confirm: '¿Estas seguro de pasar a este usuario a Administración?' }, class:"btn btn-outline-info btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -27,5 +31,3 @@
       <%= will_paginate @users, :previous_label => "« Anterior", :next_label => "Siguiente »" %>
    </div>
 </div>
-<br>
-<%= link_to 'Volver', :back, class: "btn btn-link", class:"btn btn-info btn-sm" %>

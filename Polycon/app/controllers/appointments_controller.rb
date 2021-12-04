@@ -73,13 +73,13 @@ class AppointmentsController < ApplicationController
         erb = ERB.new(File.read("./app/views/appointments/index_g_d.html.erb"))
         if (params[:profes_id]) == ""
             appointments = Appointment.where('date BETWEEN ? AND ?', (date), (date_fin)).reorder('date')
-            title= "appointmets_#{date.strftime("%F")}"
+            title= "turnos_del_#{date.strftime("%F")}"
             output = erb.result_with_hash(appointments: appointments, date: date, professional:nil)
         else
             @professional = Professional.find(params[:profes_id])
             appointments = @professional.appointments.where('date BETWEEN ? AND ?', (date), (date_fin)).reorder('date')
             output = erb.result_with_hash(appointments: appointments, date:date, professional:@professional)
-            title="#{@professional.surname_and_name.gsub(" ","_")}_appointmets_#{date.strftime("%F")}"
+            title="#{@professional.surname_and_name.gsub(" ","_")}_turnos_del_#{date.strftime("%F")}"
         end
         send_data(output, :filename =>"#{title}.html")
     end
@@ -89,13 +89,13 @@ class AppointmentsController < ApplicationController
         if (params[:profes_id]) == ""
             app = (Appointment.where('date BETWEEN ? AND ?', (@date), (@date_fin))).collect {|a| a.professional_id}
             professionals = Professional.where(:id => app ).reorder('surname, name')
-            title= "appointmets_week_#{@date.strftime("%F")}"
+            title= "turnos_semana_del_#{@date.strftime("%F")}"
             output = erb.result_with_hash(professionals:professionals, date: @date, date_fin:@date_fin, professional:nil)
         else
             @professional = Professional.find(params[:profes_id])
             professionals = [@professional]
             output = erb.result_with_hash(professionals:professionals, date:@date, date_fin:@date_fin, professional:@professional)
-            title="#{@professional.surname_and_name.gsub(" ","_")}_appointmets_week_#{@date.strftime("%F")}"
+            title="#{@professional.surname_and_name.gsub(" ","_")}_turnos_semana_del_#{@date.strftime("%F")}"
         end
         send_data(output, :filename =>"#{title}.html")
     end

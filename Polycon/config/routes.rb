@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   post 'professionals/download_day', to: "appointments#download_day"
   post 'professionals/download_week', to: "appointments#download_week"
   get 'users', to: 'users#index'
+  put 'user/admin', to: 'users#admin'
+  put 'user/consultation', to: 'users#consultation'
+  put 'user/attendance', to: 'users#attendance'
   root to: 'professionals#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
