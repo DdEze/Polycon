@@ -192,7 +192,7 @@ En la navegación todos los roles podrán ir al inicio haciendo click en profesi
 
 #### Base de Datos
 
-Para la base de datos decidí utilizar SQlite, y cargado en la base de datos se encuentran tres usuario con distintos roles.
+Para la base de datos decidí utilizar SQlite, y cargado en la sedd se encuentran tres usuario con distintos roles.
 
 La cuentas son: usuario
 
