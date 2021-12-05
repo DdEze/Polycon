@@ -66,10 +66,6 @@ class ProfessionalsController < ApplicationController
 
   private
 
-    def authorize
-       authorize! :read, @Professional
-    end
-
     # Use callbacks to share common setup or constraints between actions.
     def set_professional
       @professional = Professional.find(params[:id])

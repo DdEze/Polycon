@@ -16,7 +16,8 @@ User.create([{email: 'asis@gmail.com', password: 'asis123', password_confirmatio
 for i in 1..15 do 
     p = Professional.create(name:"name-#{i}" ,surname:"surname-#{i}")
     for j in (1..40) do
-        date =  (rand(DateTime.now..(DateTime.now + 100))).strftime("%F_%H:00")
+        hour= rand(8..21)
+        date =  (rand(DateTime.now..(DateTime.now + 40))).strftime("%F_#{hour}:00")
         date = DateTime.parse(date)
         Appointment.create(date:date, name:"name-#{i}-#{j}", surname:"surname-#{i}-#{j}", phone:(rand(221000000..2219999999)), notes:"pureba#{i}-#{j}", professional_id:p.id)
     end

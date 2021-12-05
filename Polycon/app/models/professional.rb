@@ -1,6 +1,6 @@
 class Professional < ApplicationRecord
     has_many :appointments
-    validates :name, :surname, presence: true
+    validates :name, :surname, presence: true, length: { maximum: 30 }
     validates :name, uniqueness: {
       scope: :surname,
       message: "Ya existe este profesional" }
