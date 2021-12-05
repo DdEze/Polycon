@@ -13,11 +13,11 @@
 ActiveRecord::Schema.define(version: 2021_11_19_180643) do
 
   create_table "appointments", force: :cascade do |t|
-    t.datetime "date"
-    t.string "name"
-    t.string "surname"
-    t.integer "phone"
-    t.string "notes"
+    t.datetime "date", null: false
+    t.string "name", null: false
+    t.string "surname", null: false
+    t.integer "phone", null: false
+    t.string "notes", default: "No hay notas", null: false
     t.integer "professional_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -25,14 +25,14 @@ ActiveRecord::Schema.define(version: 2021_11_19_180643) do
   end
 
   create_table "professionals", force: :cascade do |t|
-    t.string "name"
-    t.string "surname"
+    t.string "name", null: false
+    t.string "surname", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "rols", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
