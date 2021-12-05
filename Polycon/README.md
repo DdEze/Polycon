@@ -28,7 +28,7 @@ En la navegación todos los roles podrán ir al inicio haciendo click en profesi
 
 ## Base de Datos
 
-Para la base de datos decidí utilizar SQlite, y cargado en la base de datos se encuentran tres usuario con distintos roles.
+Para la base de datos decidí utilizar SQlite, y cargado en la seed se encuentran tres usuario con distintos roles.
 
 La cuentas son: usuario
 
@@ -40,4 +40,4 @@ La cuentas son: usuario
 
 Ademas de los usuario también se encuentran cargados varios profesionales y turnos.
 
-Si no se encuentra los datos cargado con el comando rails db:seed se encuentra todos los datos necesario para probar la pagina web.
+
