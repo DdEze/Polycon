@@ -196,11 +196,11 @@ Para la base de datos decidí utilizar SQlite, y cargado en la base de datos se 
 
 La cuentas son: usuario
 
-    1. email: admin@gmail.com y contraseña: admin123.
+    1. Para el de administración email: admin@gmail.com y contraseña: admin123.
 
-    2. email: consul@gmail.com y contraseña: consul123.
+    2. Para el de consulta email: consul@gmail.com y contraseña: consul123.
      
-    3. email: asis@gmail.com y contraseña: asis123.
+    3. Para el de asistencia email: asis@gmail.com y contraseña: asis123.
 
 Ademas de los usuario también se encuentran cargados varios profesionales y turnos.
 
